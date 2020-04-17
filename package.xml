@@ -1,43 +1,23 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>officerobot</name>
-  <version>0.6.1</version>
+  <version>0.3.0</version>
   <description>
     Abidat Office Robot
   </description>
 
-  <maintainer email="c.merkl@abidat.de">Christian Merkl</maintainer>
-
-  <license>BSD</license>
-
-  <author email="c.merkl@abidat.de">Christian Merkl</author>
-  <author email="m.halimi@abidat.de">Mergim Halimi</author>
-  <author email="f.berisha@abidat.de">Flamur Berisha</author>
-  <author email="f.halimi@abidat.de">Fitim Halimi</author>
+  <license>GPLv2</license>
 
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>message_generation</build_depend>
-  <!--
-    Need to use gazebo_dev since run script needs pkg-config
-    See: https://github.com/ros-simulation/gazebo_ros_pkgs/issues/323 for more info
-  -->
+
   <depend>geometry_msgs</depend>
   <depend>std_msgs</depend>
   <depend>roscpp</depend>
   <depend>rospy</depend>
   <depend>tf</depend>
   <depend>message_runtime</depend>
-  <depend>opencv</depend>
-  <depend>gazebo_dev</depend>
-  <depend>gazebo_ros</depend>
   <depend>ros_msgs</depend>
-
-  <!-- Export gazebo model and media path. -->
-  <export>
-    <gazebo_ros gazebo_model_path="${prefix}/models"/>
-    <gazebo_ros gazebo_media_path="${prefix}/worlds"/>
-    <gazebo_ros plugin_path="${prefix}/lib"/>
-  </export>
 
 </package>

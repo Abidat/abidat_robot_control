@@ -1,11 +1,9 @@
 /**
  * \brief      This class is used to calculate Forward Kinematics
  *  
- * \author     Mergim Halimi (m.halimi@abidat.de)
- * \maintainer Mergim Halimi (m.halimi@abidat.de)
+ * \author     Egzone Ademi (e.ademi@abidat.de)
  */
-#ifndef ___OFFICEROBOT_FORWARD_KINEMATICS___
-#define ___OFFICEROBOT_FORWARD_KINEMATICS___
+#pragma once
 
 
 //Custom OfficeRobot State Messages

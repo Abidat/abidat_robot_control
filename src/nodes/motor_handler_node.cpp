@@ -1,8 +1,6 @@
 /**
  * \brief      This class is used to controll the robot motors
  *  
- * \author     Mergim Halimi (m.halimi@abidat.de)
- * \maintainer Mergim Halimi (m.halimi@abidat.de)
  */
 #include "motor_handler_node.h"
 

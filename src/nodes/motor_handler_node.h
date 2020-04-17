@@ -1,8 +1,7 @@
 /**
  * \brief      This class is used to drive the BrickPi motor ports
  *  
- * \author     Mergim Halimi (m.halimi@abidat.de)
- * \maintainer Christian Merkl (c.merkl@abidat.de)
+ * \author Christian Merkl (c.merkl@abidat.de)
  */
 #pragma once
 

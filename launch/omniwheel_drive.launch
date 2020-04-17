@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<launch>
+ 
+<!-- 
+There are two motors for the EV3 system, large and medium. The large motor is larger and more powerful than the medium motor, but the medium motor responds faster. 
+The large motor's top speed is between 160 and 170 rpm (960-1020 deg/s), it has a stall torque of 40 Ncm, and running torque of 20 Ncm.
+-->
+
+  <!-- OfficeRobotMotorDriver for motors -->
+  <node pkg="officerobot" type="motor_handler" name="OfficeRobotMotorDriver" output="screen" >
+    <remap from="/officerobot/motor_control" to="/officerobot/motor_control" />
+    <rosparam command="load" file="$(find officerobot)/param/motor.yaml" />
+  </node>
+
+  <!-- OfficeRobot Forward Kinematic Calculator -->
+  <node pkg="officerobot" type="forward_kinematic" name="OfficeRobotForwardKinematics" output="screen" >
+    <remap from="/officerobot/cmd_vel" to="/officerobot/cmd_vel" />
+    <rosparam command="load" file="$(find officerobot)/param/forward_kinematics.yaml" />
+  </node>
+
+</launch>

@@ -1,0 +1,17 @@
+## Just an example of the config. names/topics need to be checked
+kinematic: omni
+  motor_A: 
+    name:  "front_left"
+    topic: "/officerobot/motor_control_0"
+  
+  motor_B:
+    name: "front_right"
+    topic: "/officerobot/motor_control_1"
+
+  motor_C:
+    name: "back_left"
+    topic: "/officerobot/motor_control_2"
+
+  motor_D:
+    name: "back_right"
+    topic: "/officerobot/motor_control_3"

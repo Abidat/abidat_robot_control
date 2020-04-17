@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="ydlidar_node"  pkg="ydlidar"  type="ydlidar_node" output="screen" respawn="false" >
+    <rosparam command="load" file="$(find officerobot)/param/ydlidar.yaml" />
+  </node>
+
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.0 0.0 -0.2 0.7854 0.0 0.0 /laser /base_link 40" />
+</launch>

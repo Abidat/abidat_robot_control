@@ -1,0 +1,4 @@
+# Servomotor for camera
+SUBSYSTEMS=="usb-serial", DRIVERS=="ch341-uart", SYMLINK+="servo"
+# It can be possible that the attribute may not be specific enough. After more research this will be improved
+

@@ -1,0 +1,49 @@
+motor_a:
+  enable:     true
+  is_inverse: true
+  is_servo:   false
+  middle_position: 0
+  angle_limits:
+    maximum: 0
+    minimum: 0
+  speed_limits:
+    maximum: 960
+    minimum: -960
+    
+motor_b:
+  enable:     true
+  is_inverse: true
+  is_servo:   false
+  middle_position: 0
+  angle_limits:
+    maximum: 0
+    minimum: 0
+  speed_limits:
+    maximum: 960 
+    minimum: -960
+
+
+motor_c:
+  enable:     true
+  is_inverse: true
+  is_servo:   false
+  middle_position: 0
+  angle_limits:
+    maximum: 0
+    minimum: 0
+  speed_limits:
+    maximum: 960 
+    minimum: -960
+
+
+motor_d:
+  enable:     true
+  is_inverse: true
+  is_servo:   false
+  middle_position: 0        
+  angle_limits:
+    maximum: 0
+    minimum: 0
+  speed_limits:
+    maximum: 960
+    minimum: -960

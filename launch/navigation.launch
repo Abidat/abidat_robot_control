@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Launches all necessary components to provide a navigation to the officerobot. The evo cortex slam does the mapping
+       and the rona package does the planning and path following. -->
+
+  <!-- Include slam launch file from evo tsd slam. TODO: create a slam launch file in the current package. -->
+  <include file="$(find evo_tsd_slam)/launch/slam.launch" />
+
+  <!-- Include launch file from RONA. It does all the planning and path following. -->
+  <include file="$(find rona_launcher)/launch/clickn_move_robot.launch" />
+
+</launch>

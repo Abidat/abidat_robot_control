@@ -1,0 +1,4 @@
+servo_id: 5                       # ID of the servomotor in use
+servo_port: "/dev/servo"          # used file descriptor for usb servo control device
+publisher_topic: "servo/info"     # ros topic which the node should publish the servos status
+subscriber_topic: "servo/degree"  # ros topic which the node should recieve the new angles

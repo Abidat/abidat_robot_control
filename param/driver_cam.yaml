@@ -1,0 +1,8 @@
+# camera device
+device: "/dev/video0"
+
+# video settings
+width: 640
+height: 480
+frame_rate: 10
+gain: 100

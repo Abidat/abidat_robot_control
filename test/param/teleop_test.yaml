@@ -1,0 +1,44 @@
+
+# Keyboard Enable
+
+keyboardEnable:    false
+
+# Set driving sticks for PS3 controller  //it works also for other game pads but with different indexes
+
+# axes indexes:
+# ax_horizontal_LH     = 0;
+# ax_vertical_LH       = 1;
+# ax_two_LH            = 2;
+# ax_horizontal_RH     = 3;
+# ax_vertical_RH       = 4;
+# ax_two_RH            = 5;
+
+# //button indexes
+# bn_cross             = 0;
+# bn_round             = 1;
+# bn_triangle          = 2;
+# bn_square            = 3;
+# bn_one_LH            = 4;
+# bn_one_RH            = 5;
+# bn_two_LH            = 6;
+# bn_two_RH            = 7;
+# bn_select            = 8;
+# bn_start             = 9;
+# bn_playstation       = 10;
+# bn_stickPushDown_LH  = 11;
+# bn_stickPushDown_RH  = 12;
+# bn_up                = 13;
+# bn_down              = 14;
+# bn_left              = 15;
+# bn_right             = 16;
+
+index_linear_speed_x:   1    #<!-- throttle X -->
+index_linear_speed_y:   0    #<!-- throttle Y-->
+index_angular_speed:   3    #<!-- steering -->
+switchToJoy:         10
+
+#Speed limit with 100% throttle
+
+max_linear_speed:      10    #<!-- m/s -->
+max_angular_speed:     10    #<!-- rad/s -->
+activation_function: "linear"

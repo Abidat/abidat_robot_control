@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<launch>
+<!-- 
+Controlles the robot via gamepad controller and publishes twist messages
+Make sure that the gamepad controller is connected via USB to the computer
+joy_node needs to be installed following this tutorial: https://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick
+-->
+  <arg name="joy_device" default="/dev/input/js0" />
+
+  <!-- joy controller -->
+  <node pkg="joy" type="joy_node" name="joy_node">
+    <param name="dev" type="string" value="$(arg joy_device)" />
+    <param name="autorepeat_rate" type="double" value="10" />
+  </node>
+  
+  <!-- OfficeRobot Teleoperation with joystick -->
+  <node pkg="officerobot" type="officerobot_tele_op" name="officerobot_tele_op" output="screen">
+    
+    <!-- Remapping to the same name as best practice to show the user that this topic exists with this name.-->
+    <remap from="/joy_node/joy" to="/joy_node/joy" />
+    <rosparam file="$(find officerobot)/param/tele_op.yaml"> </rosparam>
+  </node>
+</launch>

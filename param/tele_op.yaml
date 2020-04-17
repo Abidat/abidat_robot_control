@@ -1,0 +1,14 @@
+# Keyboard options
+keyboard_enable:    false  # True if keyboard is used to control, False otherwise 
+linear_keyboard_speed: 0.75 # Set driving speed when using keyboard input
+
+# Set driving sticks for PS3 controller  //it works also for other game pads but with different indexes
+index_linear_speed_x:   1    #<!-- throttle X --> Position in the `int32[] buttons` vector of `Joy message`. At this position is received and read the linear speed of the robot for x axis  
+index_linear_speed_y:   0    #<!-- throttle Y-->  same as for previous but for x axis
+index_angular_speed:    3    #<!-- steering -->   Position in the `int32[] buttons` vector of `Joy message`. At this position is received and read the angular speed of the robot
+switchToJoy:           10    
+
+# Speed limit with 100% throttle
+max_linear_speed:      10        #<!-- m/s -->    the maximum linear speed the robot can reach
+max_angular_speed:     10        #<!-- rad/s -->  the maximum angular speed the robot can reach
+activation_function: "linear"    #Possible values: linear, exponential | The type of activation function that is used

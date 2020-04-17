@@ -1,0 +1,12 @@
+<launch>
+  
+  <!-- OfficeRobot Teleoperation with joystick -->
+  <node pkg="officerobot" type="teleoperation" name="teleoperation" output="screen">
+    
+    <!-- Remapping to the same name as best practice to show the user that this topic exists with this name.-->
+    <remap from="/joy_node/joy" to="/joy_node/joy" />
+    <rosparam file="$(find officerobot)/test/param/teleop_test.yaml"> </rosparam>
+  </node>
+
+<test pkg="officerobot" test-name="rostest_teleop_node" type="rostest_teleop_node"/>
+</launch>

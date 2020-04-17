@@ -1,0 +1,14 @@
+    port: "/dev/ydlidar"
+    baudrate: 115200
+    frame_id: "laser"
+    low_exposure: false
+    resolution_fixed: true
+    auto_reconnect: true
+    reversion: false
+    angle_min: -180.0
+    angle_max:  180.0
+    range_min: 0.1
+    range_max: 16.0
+    ignore_array: ""
+    samp_rate: 9 # clarify meaning
+    frequency: 7 # clarify meaning

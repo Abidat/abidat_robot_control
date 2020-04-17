@@ -1,0 +1,7 @@
+<launch>
+  <!-- USB Camera node -->
+  <node name="uvc_cam_node" pkg="uvc_camera" type="uvc_camera_node" >
+    <remap from="camera/image_raw" to="camera/rgb/image_color" />
+    <rosparam command="load" file="$(find officerobot)/param/driver_cam.yaml" />
+  </node>
+</launch>

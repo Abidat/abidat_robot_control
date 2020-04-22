@@ -2,6 +2,7 @@
 <package format="2">
   <name>officerobot</name>
   <version>0.3.0</version>
+  <maintainer email="c.merkl@abidat.de">Christian Merkl</maintainer>
   <description>
     Abidat Office Robot
   </description>

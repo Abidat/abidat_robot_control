@@ -38,6 +38,8 @@ class Parameters:
         self.servo_port = None
         self.pub_topic = None
         self.sub_topic = None
+        self.min_angle = None
+        self.max_angle = None
     
 def readParam() -> Parameters:
     """Read parameters from the parameter server
@@ -49,6 +51,8 @@ def readParam() -> Parameters:
     param.servo_port = rospy.get_param('~servo_port')
     param.pub_topic = rospy.get_param('~publisher_topic')
     param.sub_topic = rospy.get_param('~subscriber_topic')
+    param.min_angle = rospy.get_param('~min_angle')
+    param.max_angle = rospy.get_param('~max_angle')
 
     return param
 
@@ -115,7 +119,7 @@ def initNodeAndServo():
     param = readParam()
     initServoBus(param.servo_port)
     initServo(param.servo_id)
-
+    configAngle(param.min_angle, param.max_angle)
     initPublisher(param.pub_topic)
     initSubscriber(param.sub_topic)
 
@@ -144,10 +148,16 @@ def initServo(sid: int):
     servomotor = LX16A(sid)
     rospy.loginfo("initialization successful")
 
+def configAngle(min_angle: int, max_angle: int):
+    """Sets minimum and maximum angle for the servomotor
     
+    Keyword arguments:
+    min_angle -- minimum angle received as a parameter
+    max_angle -- maximum angle received as a parameter"""
+    servomotor.angleLimitWrite(min_angle, max_angle)
 
 def initSubscriber(topic: str):
-    """Initialize subscriber to given topic
+    """Initialize subscriber to given topic and calls moveServo when input is given
     
     Keyword arguments:
     topic -- ROS topic to subscribe to"""

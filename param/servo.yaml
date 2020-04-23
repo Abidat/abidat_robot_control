@@ -1,4 +1,6 @@
 servo_id: 5                       # ID of the servomotor in use
 servo_port: "/dev/servo"          # used file descriptor for usb servo control device
 publisher_topic: "servo/info"     # ros topic which the node should publish the servos status
-subscriber_topic: "servo/degree"  # ros topic which the node should recieve the new angles
+subscriber_topic: "servo/degree"  # ros topic which the node should receive the new angles
+min_angle: 0                      # lowest allowed angle
+max_angle: 240                    # highest allowed angle

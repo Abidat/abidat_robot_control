@@ -116,6 +116,12 @@ Ros topic which the node should publish the servos status.
     subscriber_topic: "<topic>"
 Ros topic which the node should receive the new angles.
 
+    min_angle: <degree>
+Defines the lowest legal and usable angle for the servomotor
+
+    max_angle: <degree>
+Defines the highest legal and usable angle for the servomotor
+
 ## start servo control node
 
 To use the servos on the robot we use the servo control node. Start it with:

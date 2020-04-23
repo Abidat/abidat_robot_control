@@ -95,7 +95,7 @@ The servo control node is used to communicate and control the servomotor Lewan S
 ## Hardware setup
 
 First you need to setup the LX-16A servo by connecting it to the circuit board. It is possible to connect more servos but till now this program only works with one.
-After connecting the servo to it, it is needed to connect a power supply with at least <volt> and at most <volt> voltage and to the device wanted to control it with, via usb-c connection.
+After connecting the servo to it, it is needed to connect a power supply with at least 4.5 and at most 14 voltage and to the device wanted to control it with, via usb-c connection.
 
 ## Software preperation
 

@@ -31,8 +31,11 @@
  * @brief The namespace used for OfficeRobot
  * 
  */
-namespace officerobot
-{
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 
 /**
  * @brief This class handles a brick pie motor using the brick pie library. This class is a ROS node.
@@ -246,5 +249,8 @@ class MotorHandlerNode
   
   };
 
-} //end namespace officerobot
+} //end namespace control
 
+} //end namespace robot
+
+} //end namespace abidat

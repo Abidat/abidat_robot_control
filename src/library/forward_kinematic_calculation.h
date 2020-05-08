@@ -7,6 +7,11 @@
 
 #include <cmath>
 
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 
 /**
  * \brief Function that converts rad/s to rpm
@@ -20,3 +25,8 @@ double convertRADToRPM(double movement)
     return movement;
 }
 
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat

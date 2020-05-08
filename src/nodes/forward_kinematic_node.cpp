@@ -8,9 +8,11 @@
 #include "forward_kinematic_calculation.h"
 #include "forward_kinematic.h"
 
+#include "abidat_robot_control/MotorControl.h"
+
 namespace officerobot {
 
-void ForwardKinematicNode::initialize(ros::NodeHandle node, ros::Subscriber velocity_subscriber){
+void ForwardKinematicNode::initialize(ros::NodeHandle node, ros::Subscriber velocity_subscriber) {
 
   // Initialize publisher
   for(std::size_t i = 0; i < forward_kinematics_->getNumMotors(); ++i)  

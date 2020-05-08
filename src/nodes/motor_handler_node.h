@@ -153,7 +153,7 @@ class MotorHandlerNode
      * 
      * @param motor_control Velocity that is published into the topic
      */
-    void MotorHandlerNodeCallback(const officerobot::MotorControlConstPtr& motor_control,size_t motorIdx);
+    void MotorHandlerNodeCallback(const abidat_robot_control::MotorControlConstPtr& motor_control,size_t motorIdx);
     
     /**
      * @brief This function instantiate the BrickPi and checks if the connection with the harware is succesfull or not.

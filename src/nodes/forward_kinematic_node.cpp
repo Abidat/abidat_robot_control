@@ -19,9 +19,12 @@ namespace control {
 bool ForwardKinematicNode::initialize(ros::NodeHandle& private_nh, ros::NodeHandle& node) {
 
   // Initialize publisher
-  for(std::size_t i = 0; i < forward_kinematics_->getNumMotors(); ++i)  
-    pub_motor_control_[i] = node.advertise<abidat_robot_control::MotorControl>("/officerobot/motor_control_" + i, 1);
-  
+  for(std::size_t i = 0; i < forward_kinematics_->getNumMotors(); ++i) {
+    const std::string topic_name = "/officerobot/motor_control_" + i;
+    ROS_INFO("ForwardKinematic: advertise publisher \"%s\".", topic_name.c_str());
+    pub_motor_control_[i] = node.advertise<abidat_robot_control::MotorControl>(topic_name, 1);
+  }
+
   // Initialize subscriber
   velocity_subscriber_ = node.subscribe<geometry_msgs::Twist>("/officerobot/cmd_vel", 1, &ForwardKinematicNode::callback, this);
 

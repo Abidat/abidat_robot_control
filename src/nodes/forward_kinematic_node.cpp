@@ -38,7 +38,8 @@ bool ForwardKinematicNode::initialize(ros::NodeHandle& private_nh, ros::NodeHand
   // check if values are in a valid range
   if(distance_wheels_ > 0.0 && wheel_diameter_ > 0.0)
   {
-    return true;
+//    return true;
+;
   }
 
   else
@@ -51,7 +52,7 @@ bool ForwardKinematicNode::initialize(ros::NodeHandle& private_nh, ros::NodeHand
 
   // Initialize publisher
   for(std::size_t i = 0; i < forward_kinematics_->getNumMotors(); ++i) {
-    const std::string topic_name = "/officerobot/motor_control_" + i;
+    const std::string topic_name = "/officerobot/motor_control_" + std::to_string(i);
     ROS_INFO("ForwardKinematic: advertise publisher \"%s\".", topic_name.c_str());
     pub_motor_control_[i] = node.advertise<abidat_robot_control::MotorControl>(topic_name, 1);
   }

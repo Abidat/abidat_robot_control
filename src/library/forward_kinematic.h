@@ -5,10 +5,6 @@
  */
 #pragma once
 
-
-//Custom OfficeRobot State Messages
-#include <officerobot/MotorControl.h>
-
 //ROS
 #include <ros/ros.h>
 
@@ -116,4 +112,5 @@ namespace officerobot
       double wheel_diameter_; 
 
   };
-}//end namespace officerobot
+
+} // end namespace officerobot

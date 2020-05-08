@@ -48,7 +48,7 @@ public:
     double wheel_diameter_;
 
     std::array<ros::Publisher,4> pub_motor_control_; //> publisher for the motor control for each existing motor 
-    std::shared_ptr<OfficeRobotForwardKinematics> forward_kinematics_; //> shared pointer declaration of type OfficeRobotForwardKinematics
+    std::shared_ptr<ForwardKinematics> forward_kinematics_; //> shared pointer declaration of type ForwardKinematics
   
 }; 
 

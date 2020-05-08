@@ -4,9 +4,15 @@
  */
 
 #include <gtest/gtest.h>
-#include <nodes/officerobot_forward_kinematics.h>
+#include <nodes/forward_kinematic_node.h>
 #include <ros/ros.h>
-#include "forward_kinematics_calculations.h"
+#include "forward_kinematic_calculation.h"
+
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 
 
 /**
@@ -75,7 +81,7 @@ private:
   
     total_movement = forward_kinematics_.calculateForwardKinematics(*twist_msg);
 
-    officerobot::MotorControl motor_control_msg;
+    abidat_robot_control::MotorControl motor_control_msg;
 
     motor_control_msg.header.stamp = ros::Time::now();
     motor_control_msg.header.frame_id = "base_link";
@@ -87,8 +93,8 @@ private:
     }
   }
 
-  // create OfficeRobotForwardKinematics object with wheel distance and wheel diameter
-  OfficeRobotForwardKinematics forward_kinematics_{0.2, 0.056};
+  // create ForwardKinematics object with wheel distance and wheel diameter
+  ForwardKinematics forward_kinematics_{0.2, 0.056};
   
   ros::NodeHandle nh_;
   std::array<ros::Publisher, 4> pub_motor_control_;
@@ -109,6 +115,12 @@ TEST_F(TestForwardKinematic, MessageReceived)
 }
   ASSERT_TRUE(this->correctTwistMsgReceived());
 }
+
+} //end namespace
+
+} //end namespace
+
+} //end namespace
 
 
 int main(int argc, char** argv)

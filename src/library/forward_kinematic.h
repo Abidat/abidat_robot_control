@@ -44,7 +44,7 @@ namespace control {
   /**
    *\brief Class for the Omniwheel Robot "Marvin" 
    */
-  class OfficeRobotForwardKinematics : public ForwardKinematicsCalculation
+  class ForwardKinematics : public ForwardKinematicsCalculation
   {
     public:
       /**
@@ -52,7 +52,7 @@ namespace control {
        * \param distance_wheels distancse between two wheels
        * \param wheel_diamter diameter of each wheel 
        */
-      OfficeRobotForwardKinematics(const double distance_wheels, const double wheel_diameter)
+      ForwardKinematics(const double distance_wheels, const double wheel_diameter)
         : distance_wheels_(distance_wheels),
           wheel_diameter_(wheel_diameter)
       {
@@ -103,7 +103,7 @@ namespace control {
       /**
        * \brief Destroy the Office Robot Forward Kinematics object
        */
-      ~OfficeRobotForwardKinematics() = default;
+      ~ForwardKinematics() = default;
 
     private:
       struct Motors {

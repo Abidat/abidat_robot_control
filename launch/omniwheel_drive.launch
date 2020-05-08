@@ -14,7 +14,7 @@ The large motor's top speed is between 160 and 170 rpm (960-1020 deg/s), it has 
   </node>
 
   <!-- OfficeRobot Forward Kinematic Calculator -->
-  <node pkg="abidat_robot_control" type="forward_kinematic" name="OfficeRobotForwardKinematics" output="screen" >
+  <node pkg="abidat_robot_control" type="forward_kinematic" name="ForwardKinematics" output="screen" >
     <remap from="/officerobot/cmd_vel" to="/officerobot/cmd_vel" />
     <rosparam command="load" file="$(find abidat_robot_control)/param/forward_kinematics.yaml" />
   </node>

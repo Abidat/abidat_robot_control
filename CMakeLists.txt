@@ -186,6 +186,23 @@ target_link_libraries(rostest_teleop_node
   abidat_robot_control
 )
 
+if (CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+
+add_rostest_gtest(ros_node_forward_kinematics_test
+  test/launch/basic_function_test.launch
+  test/src/ros_node_forward_kinematics_test.cpp
+)
+
+target_link_libraries(ros_node_forward_kinematics_test
+  ${GTEST_BOTH_LIBRARIES}
+  ${catkin_LIBRARIES}
+  abidat_robot_control
+)
+
+endif()
+
+
 #GTESTS
 #input_mapper
 catkin_add_gtest(test_input_mapper 
@@ -194,6 +211,16 @@ catkin_add_gtest(test_input_mapper
 
 if(TARGET test_input_mapper)
   target_link_libraries(test_input_mapper
+    abidat_robot_control
+  )
+endif()
+
+catkin_add_gtest(test_forward_kinematics
+  test/src/test_forward_kinematics
+)
+
+if(TARGET test_forward_kinematics)
+  target_link_libraries(test_forward_kinematics
     abidat_robot_control
   )
 endif()

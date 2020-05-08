@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(officerobot)
+project(abidat_robot_control)
 
 ##Compile with C++11 Standards
 add_compile_options(-std=c++17)
@@ -65,7 +65,7 @@ include_directories(
 )
 
 ## Declare a C++ library
-add_library(officerobot SHARED               
+add_library(abidat_robot_control SHARED               
   src/library/brick_pi/BrickPi3.cpp
   src/library/input_mapping.cpp
   src/library/get_keyboard_input.cpp
@@ -85,30 +85,30 @@ add_executable(teleoperation
 )
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(officerobot
+target_link_libraries(abidat_robot_control
   ${catkin_LIBRARIES}
   ncurses # \Todo use "find package" instead
 )
 
 target_link_libraries(motor_handler
-  officerobot
+  abidat_robot_control
   ${catkin_LIBRARIES}
 )
 
 target_link_libraries(forward_kinematic
-  officerobot
+  abidat_robot_control
   ${catkin_LIBRARIES}
 )
 
 target_link_libraries(teleoperation
-  officerobot
+  abidat_robot_control
   ${catkin_LIBRARIES}
 )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-add_dependencies( officerobot ${PROJECT_NAME}_gencpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies( abidat_robot_control ${PROJECT_NAME}_gencpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -183,7 +183,7 @@ add_rostest_gtest(rostest_teleop_node
 )
 
 target_link_libraries(rostest_teleop_node
-  officerobot
+  abidat_robot_control
 )
 
 #GTESTS
@@ -194,7 +194,7 @@ catkin_add_gtest(test_input_mapper
 
 if(TARGET test_input_mapper)
   target_link_libraries(test_input_mapper
-    officerobot
+    abidat_robot_control
   )
 endif()
 
@@ -205,7 +205,7 @@ endif()
 
 # if(TARGET test_get_keyboard_input)
 #   target_link_libraries(test_get_keyboard_input
-#     officerobot
+#     abidat_robot_control
 #   )
 # endif()
 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>officerobot</name>
+  <name>abidat_robot_control</name>
   <version>0.3.0</version>
   <maintainer email="c.merkl@abidat.de">Christian Merkl</maintainer>
   <description>

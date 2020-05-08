@@ -14,7 +14,7 @@ void ForwardKinematicNode::initialize(ros::NodeHandle node, ros::Subscriber velo
 
   // Initialize publisher
   for(std::size_t i = 0; i < forward_kinematics_->getNumMotors(); ++i)  
-    pub_motor_control_[i] = node.advertise<officerobot::MotorControl>("/officerobot/motor_control_" + i, 1);
+    pub_motor_control_[i] = node.advertise<abidat_robot_control::MotorControl>("/officerobot/motor_control_" + i, 1);
   
   // Initialize subscriber
   velocity_subscriber = node.subscribe<geometry_msgs::Twist>("/officerobot/cmd_vel", 1, &ForwardKinematicNode::callback, this);
@@ -62,7 +62,7 @@ void ForwardKinematicNode::callback(const geometry_msgs::TwistConstPtr& twist_ms
 
   velocity = forward_kinematics_->calculateForwardKinematics(*twist_msg);
   
-  officerobot::MotorControl motor_control_msg;
+  abidat_robot_control::MotorControl motor_control_msg;
   // Todo: Change message type to twist stamp and use header from this message instead
   motor_control_msg.header.stamp = ros::Time::now();
   motor_control_msg.header.frame_id = "base_link";

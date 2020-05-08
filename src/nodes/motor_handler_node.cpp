@@ -277,7 +277,7 @@ void MotorHandlerNode::readBrickPiValues(void)
     {
       if(motor_configurations_[motorIdx].is_enabled == true) //maybe instead of  check is.enable, check if the publisher was started 
       {
-        officerobot::MotorState motor_state_msg;
+        abidat_robot_control::MotorState motor_state_msg;
         std_msgs::Header header_;
 
         header_.seq = 0;
@@ -298,7 +298,7 @@ void MotorHandlerNode::readBrickPiValues(void)
     }
 
     //Publish Device info 
-    officerobot::DeviceInfo device_info_msg;
+    abidat_robot_control::DeviceInfo device_info_msg;
     std_msgs::Header header_;
 
     header_.seq = 0;

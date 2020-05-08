@@ -17,7 +17,7 @@ TEST(ForwardKiematics, NoMovement)
    twist_msg->angular.z = 0.0;
   
    // create object of OfficeRobotForwardKinematics to use its FK calculation
-   officerobot::OfficeRobotForwardKinematics forward_kinematics(0.2, 0.056);
+   abidat::robot::control::OfficeRobotForwardKinematics forward_kinematics(0.2, 0.056);
    
    total_movement = forward_kinematics.calculateForwardKinematics(*twist_msg);
    
@@ -39,7 +39,7 @@ TEST(ForwardKiematics, LinearXMovement)
    twist_msg->angular.z = 0.0;
   
    // create object of OfficeRobotForwardKinematics to use its FK calculation
-   officerobot::OfficeRobotForwardKinematics forward_kinematics(0.2, 0.056);
+   abidat::robot::control::OfficeRobotForwardKinematics forward_kinematics(0.2, 0.056);
    
    total_movement = forward_kinematics.calculateForwardKinematics(*twist_msg);
    
@@ -62,7 +62,7 @@ TEST(ForwardKinematics, LinearYMovement)
    twist_msg->angular.z = 0.0;
   
    // create object of OfficeRobotForwardKinematics to use its FK calculation
-   officerobot::OfficeRobotForwardKinematics forward_kinematics(0.2, 0.056);
+   abidat::robot::control::OfficeRobotForwardKinematics forward_kinematics(0.2, 0.056);
    
    total_movement = forward_kinematics.calculateForwardKinematics(*twist_msg);
    
@@ -85,7 +85,7 @@ TEST(ForwardKinematics, RotationAroundZaxis)
    twist_msg->angular.z = 1.0;
   
    // create object of OfficeRobotForwardKinematics to use its FK calculation
-   officerobot::OfficeRobotForwardKinematics forward_kinematics(0.2, 0.056);
+   abidat::robot::control::OfficeRobotForwardKinematics forward_kinematics(0.2, 0.056);
    
    total_movement = forward_kinematics.calculateForwardKinematics(*twist_msg);
    

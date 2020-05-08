@@ -56,7 +56,7 @@ bool ForwardKinematicNode::readParams(){
     return false;
   }
   // TODO: make forward kinematics selectable using a factory
-  forward_kinematics_ = std::make_shared<abidat::robot::control::OfficeRobotForwardKinematics>(distance_wheels_, wheel_diameter_);
+  forward_kinematics_ = std::make_shared<OfficeRobotForwardKinematics>(distance_wheels_, wheel_diameter_);
 }
 
 void ForwardKinematicNode::callback(const geometry_msgs::TwistConstPtr& twist_msg){

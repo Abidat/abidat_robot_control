@@ -19,7 +19,7 @@ public:
   { 
     // initialize publisher and subscriber
     for(std::size_t i = 0; i < forward_kinematics_.getNumMotors(); ++i)
-      pub_motor_control_[i] = nh_.advertise<officerobot::MotorControl>("/officerobot/motor_control_" + i, 1);
+      pub_motor_control_[i] = nh_.advertise<abidat_robot_control::MotorControl>("/officerobot/motor_control_" + i, 1);
 
     pub_twist_msg_ = nh_.advertise<geometry_msgs::Twist>("/officerobot/cmd_vel", 1);
     velocity_subscriber_ = nh_.subscribe<geometry_msgs::Twist>("/officerobot/cmd_vel", 1, &TestForwardKinematic::callBackTwist, this);        
@@ -88,7 +88,7 @@ private:
   }
 
   // create OfficeRobotForwardKinematics object with wheel distance and wheel diameter
-  officerobot::OfficeRobotForwardKinematics forward_kinematics_{0.2, 0.056};
+  OfficeRobotForwardKinematics forward_kinematics_{0.2, 0.056};
   
   ros::NodeHandle nh_;
   std::array<ros::Publisher, 4> pub_motor_control_;

@@ -14,9 +14,9 @@
 
 //Custom OfficeRobot State Messages
 // \todo: actually it can be removed
-#include <officerobot/MotorState.h>
-#include <officerobot/DeviceInfo.h>
-#include <officerobot/MotorControl.h>
+#include <abidat_robot_control/MotorState.h>
+#include <abidat_robot_control/DeviceInfo.h>
+#include <abidat_robot_control/MotorControl.h>
 
 //Thread and thread management
 #include <thread>

@@ -52,12 +52,19 @@ double expoActivation(const double value)
 
 ActivationFunction createActivationFunction(const std::string& name)
 {
-  if (name == "linear")
+  if (name == "linear") {
     return linearActivation;
-  else if (name == "exponential")
+  }
+  else if (name == "exponential") {
     return expoActivation;
-  else
+  }
+  else {
     ROS_ERROR("createActivationFunction(): the specified function does not exist.");
+  }
+
+  // return empty function
+  // @todo it is better to throw an exception here or return std::optional
+  return { };
 }
 
 } //end namespace control

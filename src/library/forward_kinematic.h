@@ -120,8 +120,10 @@ namespace control {
       double wheel_diameter_; 
 
   };
+  
 } //end namespace control
 
 } //end namespace robot
 
 } //end namespace abidat
+

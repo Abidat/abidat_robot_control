@@ -59,6 +59,8 @@ bool ForwardKinematicNode::readParams(){
   }
   // TODO: make forward kinematics selectable using a factory
   forward_kinematics_ = std::make_shared<ForwardKinematics>(distance_wheels_, wheel_diameter_);
+
+  return true;
 }
 
 void ForwardKinematicNode::callback(const geometry_msgs::TwistConstPtr& twist_msg){

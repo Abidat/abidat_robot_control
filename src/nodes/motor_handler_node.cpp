@@ -4,8 +4,11 @@
  */
 #include "motor_handler_node.h"
 
-namespace officerobot
-{
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 
 MotorHandlerNode::MotorHandlerNode(void)
 {
@@ -356,7 +359,12 @@ void MotorHandlerNode::TimeOutSafety(void)
   }
 }
 
-} //end namespace officerobot
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat
+
 
 int main(int argc, char** argv)
 {
@@ -364,7 +372,7 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
   ros::NodeHandle privNh("~");
 
-  officerobot::MotorHandlerNode motorHandle;
+  abidat::robot::control::MotorHandlerNode motorHandle;
   motorHandle.initialize(privNh, nh);
 
   ros::spin(); // starts a loop 

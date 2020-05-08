@@ -8,9 +8,13 @@
 #include "forward_kinematic_calculation.h"
 #include "forward_kinematic.h"
 
-#include "abidat_robot_control/MotorControl.h"
+#include "abidat_robot_control/MotorControl.h" 
 
-namespace officerobot {
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 
 void ForwardKinematicNode::initialize(ros::NodeHandle node, ros::Subscriber velocity_subscriber) {
 
@@ -54,7 +58,7 @@ bool ForwardKinematicNode::readParams(){
     return false;
   }
   // TODO: make forward kinematics selectable using a factory
-  forward_kinematics_ = std::make_shared<officerobot::OfficeRobotForwardKinematics>(distance_wheels_, wheel_diameter_);
+  forward_kinematics_ = std::make_shared<abidat::robot::control::OfficeRobotForwardKinematics>(distance_wheels_, wheel_diameter_);
 }
 
 void ForwardKinematicNode::callback(const geometry_msgs::TwistConstPtr& twist_msg){
@@ -76,12 +80,16 @@ void ForwardKinematicNode::callback(const geometry_msgs::TwistConstPtr& twist_ms
   }
 }
 
-} //end namespace officerobot
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat
 
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "ForwardKinematicNode");
-    officerobot::ForwardKinematicNode officeRobot;
+    abidat::robot::control::ForwardKinematicNode officeRobot;
     ros::spin();
 
     return 0;

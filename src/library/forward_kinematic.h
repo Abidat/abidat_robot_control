@@ -5,6 +5,10 @@
  */
 #pragma once
 
+
+//Custom OfficeRobot State Messages
+#include <abidat_robot_control/MotorControl.h>
+
 //ROS
 #include <ros/ros.h>
 
@@ -20,8 +24,12 @@
 #include <vector>
 
 
-namespace officerobot
-{
+namespace abidat {
+
+namespace robot {
+
+namespace control {
+
   /**
    * \brief Interface with abstract methods for forward kinematics calculation  
    */
@@ -112,5 +120,10 @@ namespace officerobot
       double wheel_diameter_; 
 
   };
+  
+} //end namespace control
 
-} // end namespace officerobot
+} //end namespace robot
+
+} //end namespace abidat
+

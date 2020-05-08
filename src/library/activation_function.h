@@ -12,6 +12,11 @@
 #include <assert.h>
 #include <cmath>
 
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 
 //Alias for the std::function type
 using ActivationFunction = std::function<double(const double)>;
@@ -55,8 +60,15 @@ ActivationFunction createActivationFunction(const std::string& name)
   }
   else {
     ROS_ERROR("createActivationFunction(): the specified function does not exist.");
-    // return empty function
-    // @todo it is better to throw an exception here or return std::optional
-    return { };
   }
+
+  // return empty function
+  // @todo it is better to throw an exception here or return std::optional
+  return { };
 }
+
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat

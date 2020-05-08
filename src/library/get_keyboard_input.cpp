@@ -1,5 +1,11 @@
 #include "get_keyboard_input.h"
 
+namespace abidat {
+
+namespace robot {
+
+namespace control {
+
 void GetKeyboardInput::getKey()
 {
 	initscr();
@@ -13,3 +19,9 @@ void GetKeyboardInput::getKey()
 	}
 	endwin();
 }
+
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat

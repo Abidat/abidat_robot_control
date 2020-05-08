@@ -16,22 +16,19 @@ namespace robot {
 
 namespace control {
 
-void ForwardKinematicNode::initialize(ros::NodeHandle node, ros::Subscriber velocity_subscriber) {
+bool ForwardKinematicNode::initialize(ros::NodeHandle& private_nh, ros::NodeHandle& node) {
 
   // Initialize publisher
   for(std::size_t i = 0; i < forward_kinematics_->getNumMotors(); ++i)  
     pub_motor_control_[i] = node.advertise<abidat_robot_control::MotorControl>("/officerobot/motor_control_" + i, 1);
   
   // Initialize subscriber
-  velocity_subscriber = node.subscribe<geometry_msgs::Twist>("/officerobot/cmd_vel", 1, &ForwardKinematicNode::callback, this);
-}
+  velocity_subscriber_ = node.subscribe<geometry_msgs::Twist>("/officerobot/cmd_vel", 1, &ForwardKinematicNode::callback, this);
 
-bool ForwardKinematicNode::readParams(){
 
   ROS_INFO("Start setting the Robot parameters");
 
   //Setup private node handler
-  ros::NodeHandle private_nh("~");
 
   // Getting needed parameters
   if(private_nh.hasParam("distance_wheels"))
@@ -91,7 +88,13 @@ void ForwardKinematicNode::callback(const geometry_msgs::TwistConstPtr& twist_ms
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "ForwardKinematicNode");
-    abidat::robot::control::ForwardKinematicNode officeRobot;
+    abidat::robot::control::ForwardKinematicNode kinematic;
+    ros::NodeHandle private_nh("~");
+    ros::NodeHandle nh;
+
+    if (!kinematic.initialize(private_nh, nh))
+      return 1;
+
     ros::spin();
 
     return 0;

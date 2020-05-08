@@ -28,7 +28,7 @@ public:
    * \param node the ros Nodehandler 
    * \param veloctiy_subscriber subscriber initialized with twist messages
    */ 
-  void initialize(ros::NodeHandle node, ros::Subscriber velocity_subscriber);
+  bool initialize(ros::NodeHandle& private_nh, ros::NodeHandle& node);
   
   private:
     /**
@@ -42,11 +42,12 @@ public:
      * Parameters distance_wheels and wheel_diameter are needed to intialize the forward kinematic class
      * \return true if successfull.
      */ 
-    bool readParams();
+    // bool readParams();
 
     double distance_wheels_;
     double wheel_diameter_;
 
+    ros::Subscriber velocity_subscriber_; //> subscriber for velocity
     std::array<ros::Publisher,4> pub_motor_control_; //> publisher for the motor control for each existing motor 
     std::shared_ptr<ForwardKinematics> forward_kinematics_; //> shared pointer declaration of type ForwardKinematics
   

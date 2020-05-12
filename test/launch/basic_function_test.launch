@@ -1,6 +1,0 @@
-<launch>
-
-  <test pkg="abidat_robot_control" test-name="basic_function" type="ros_node_forward_kinematics_test" time-limit="100000000">
-
-  </test>
-</launch>

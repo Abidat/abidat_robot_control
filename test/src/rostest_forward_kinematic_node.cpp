@@ -34,13 +34,16 @@ public:
   // initialize twist messages for linear and angular movement
   void publishTwistMsg()
   {
-    ROS_INFO("Publish twist message");
+    
     geometry_msgs::Twist twist_msg;
 
     twist_msg.linear.x = 0;
     twist_msg.linear.y = 0;
     twist_msg.angular.z = 0;
-
+    
+    ROS_INFO("Publish twist message x = %s, y = %s, z = %s", std::to_string(twist_msg.linear.x).c_str(),
+                                                             std::to_string(twist_msg.linear.y).c_str(),
+                                                             std::to_string(twist_msg.angular.z).c_str());
     pub_twist_msg_.publish(twist_msg);
   }
   
@@ -70,25 +73,24 @@ private:
   {
     ROS_INFO("Callback Function");
 
-    // check if the subscribed messages are the same as the published ones -> TODO: remove hard coded numbers?
     if (twist_msg->linear.x == 0 && twist_msg->linear.y == 0 && twist_msg->angular.z == 0)
     {
       correct_twist_msg_received_ = true;
     }
     
     //get total movement from forward kinematics
-    std::vector<double> total_movement;
+    std::vector<double> velocity;
   
-    total_movement = forward_kinematics_.calculateForwardKinematics(*twist_msg);
+    velocity = forward_kinematics_.calculateForwardKinematics(*twist_msg);
 
     abidat_robot_control::MotorControl motor_control_msg;
 
     motor_control_msg.header.stamp = ros::Time::now();
     motor_control_msg.header.frame_id = "base_link";
 
-    for(std::size_t i = 0; i < total_movement.size(); i++)
+    for(std::size_t i = 0; i < velocity.size(); i++)
     {
-      motor_control_msg.speed = static_cast<std::int16_t>(convertRADToRPM(total_movement[i]));
+      motor_control_msg.speed = static_cast<std::int16_t>(convertRADToRPM(velocity[i]));
       pub_motor_control_[i].publish(motor_control_msg);
     }
   }
@@ -125,8 +127,7 @@ TEST_F(TestForwardKinematic, MessageReceived)
 
 int main(int argc, char** argv)
 {
-  //TestForwardKinematic forward_kin;
   ::testing::InitGoogleTest(&argc, argv);
-  ros::init(argc, argv, "basic_function_test");
+  ros::init(argc, argv, "test_forward_kinematic");
   return RUN_ALL_TESTS();
 }

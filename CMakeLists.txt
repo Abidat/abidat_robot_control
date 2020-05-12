@@ -189,12 +189,12 @@ target_link_libraries(rostest_teleop_node
 if (CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
 
-add_rostest_gtest(ros_node_forward_kinematics_test
-  test/launch/basic_function_test.launch
-  test/src/ros_node_forward_kinematics_test.cpp
+add_rostest_gtest(rostest_forward_kinematic_node
+  test/launch/rostest_forward_kinematic_node.test
+  test/src/rostest_forward_kinematic_node.cpp
 )
 
-target_link_libraries(ros_node_forward_kinematics_test
+target_link_libraries(rostest_forward_kinematic_node
   ${GTEST_BOTH_LIBRARIES}
   ${catkin_LIBRARIES}
   abidat_robot_control

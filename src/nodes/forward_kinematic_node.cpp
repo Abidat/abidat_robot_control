@@ -20,8 +20,6 @@ bool ForwardKinematicNode::initialize(ros::NodeHandle& private_nh, ros::NodeHand
 {
   ROS_INFO("Start setting the Robot parameters");
 
-  //Setup private node handler
-
   // Getting needed parameters
   if(private_nh.hasParam("distance_wheels"))
   {
@@ -35,18 +33,13 @@ bool ForwardKinematicNode::initialize(ros::NodeHandle& private_nh, ros::NodeHand
     ROS_INFO("Parameter wheel_diameter is set to %f", this->wheel_diameter_);
   }
 
-  // check if values are in a valid range
-  if(distance_wheels_ > 0.0 && wheel_diameter_ > 0.0)
+  // check if values are in a valid range 
+  if(!(distance_wheels_ > 0.0 && wheel_diameter_ > 0.0))
   {
-//    return true;
-;
-  }
-
-  else
-  {
-    ROS_ERROR("The wheel distance, the wheel diameter and the distance of the axes must be larger than 0");
+    ROS_ERROR("The wheel distance and the wheel diameter must be larger than 0"); 
     return false;
   }
+
   // TODO: make forward kinematics selectable using a factory
   forward_kinematics_ = std::make_shared<ForwardKinematics>(distance_wheels_, wheel_diameter_);
 
@@ -91,15 +84,15 @@ void ForwardKinematicNode::callback(const geometry_msgs::TwistConstPtr& twist_ms
 
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "ForwardKinematicNode");
-    abidat::robot::control::ForwardKinematicNode kinematic;
-    ros::NodeHandle private_nh("~");
-    ros::NodeHandle nh;
+  ros::init(argc, argv, "ForwardKinematicNode");
+  abidat::robot::control::ForwardKinematicNode kinematic;
+  ros::NodeHandle private_nh("~");
+  ros::NodeHandle nh;
 
-    if (!kinematic.initialize(private_nh, nh))
-      return 1;
+  if (!kinematic.initialize(private_nh, nh))
+    return 1;
 
-    ros::spin();
+  ros::spin();
 
-    return 0;
+  return 0;
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <node name="servocontroller"  pkg="officerobot"  type="servocontrol.py">
+  <node name="servocontroller"  pkg="officerobot"  type="servocontrol.py" output="screen">
     <rosparam command="load" file="$(find officerobot)/param/servo.yaml" />
   </node>
 </launch>

@@ -3,6 +3,7 @@
 import rospy
 from std_msgs.msg import Int64
 from officerobot.msg import ServoInfo
+from functools import partial
 import time
 
 # servo lib dependency
@@ -31,48 +32,52 @@ class ServoDynamicStatus:
         self.LED = 0
         self.LED_error = 0, 0, 0
 
-class Parameters:
+class ServoParameters:
     """Read parameters from the parameter server"""
     def __init__(self):
-        self.servo_id = None
+        self.ID = None
         self.servo_port = None
         self.pub_topic = None
         self.sub_topic = None
         self.min_angle = None
         self.max_angle = None
     
-def readParam() -> Parameters:
+def readParam(servo: str): #-> params:list, servo_port:str
     """Read parameters from the parameter server
     
     Returns:
     param - read parameters from the parameterserver and save them in Parameters class"""
-    param = Parameters()
-    param.servo_id = rospy.get_param('~servo_id')
-    param.servo_port = rospy.get_param('~servo_port')
-    param.pub_topic = rospy.get_param('~publisher_topic')
-    param.sub_topic = rospy.get_param('~subscriber_topic')
-    param.min_angle = rospy.get_param('~min_angle')
-    param.max_angle = rospy.get_param('~max_angle')
+    # servos = rospy.get_param('~servos')
+    # servo_port = rospy.get_param('~servo_port')
 
-    return param
+    #params = []
+    param = ServoParameters()
+    param.ID = rospy.get_param('~' + str(servo) + '/ID')
+    param.pub_topic = rospy.get_param('~' + str(servo) + '/publisher_topic')
+    param.sub_topic = rospy.get_param('~' + str(servo) + '/subscriber_topic')
+    param.min_angle = rospy.get_param('~' + str(servo) + '/min_angle')
+    param.max_angle = rospy.get_param('~' + str(servo) + '/max_angle')
+    #params.append(param)
 
-def moveServo(data: int):
+    return param#, servo_port
+
+def moveServo(servo:int, data: int):
     """Rotates the servomotor to an absolute degree
     
     Keyword arguments:
     data -- integer degree given by topic"""
-    servomotor.moveTimeWrite(data.data)
+    servomotor[servo].moveTimeWrite(data.data)
 
 
-def getAndPublishServoStatus(my_time: time):
+def getAndPublishServoStatus(servo:int, my_time: time):
     """Requests static and dynamic Statusinformation about the servomotor before returning it
     
     Keyword arguments:
     my_time -- time stamp from first call of this function
     Returns:
     Stored status from staticStatusRequest() and dynamicStatusRequest()"""
-    staticStatus = staticStatusRequest()
-    dynamicStatus = dynamicStatusRequest()
+    staticStatus = staticStatusRequest(servo)
+    dynamicStatus = dynamicStatusRequest(servo)
 
     message = ServoInfo()
     message.since_start = rospy.get_rostime() - servo_time
@@ -116,17 +121,22 @@ def initNodeAndServo():
     
     Initializing ROS node and servomotors"""
     rospy.init_node('servocontrol', anonymous=True)
-    param = readParam()
-    initServoBus(param.servo_port)
-    initServo(param.servo_id)
-    configAngle(param.min_angle, param.max_angle)
-    initPublisher(param.pub_topic)
-    initSubscriber(param.sub_topic)
-
-    global servo_time
-    servo_time = rospy.get_rostime()
-    rospy.Timer(rospy.Duration(1), getAndPublishServoStatus)
-
+    servos = rospy.get_param('~servos')
+    servo_port = rospy.get_param('~servo_port')
+    initServoBus(servo_port)
+    global servomotor
+    servomotor = {}
+    for servo in servos:
+        param = readParam(servo)
+        servomotor[servo] = initServo(param.ID, servo)
+        configAngle(param.min_angle, param.max_angle, servo)
+        initPublisher(param.pub_topic)
+        initSubscriber(param.sub_topic, servo)
+        global servo_time
+        servo_time = rospy.get_rostime()
+        rospy.Timer(rospy.Duration(1), partial(getAndPublishServoStatus, servo))
+    # TODO Callbacks (getAndPublishServoStatus and moveServo) needs to get the directory key!!!
+    # ERROR doesn't save the first motor (servo_a)
     rospy.spin()
 
 def initServoBus(device: str):
@@ -138,34 +148,35 @@ def initServoBus(device: str):
     LX16A.initialize(device)
     rospy.loginfo("initialization successful")
 
-def initServo(sid: int):
+def initServo(sid: int, servo:str):
     """Initialize servomotor
 
     Keyword arguments:
     sid -- id of chosen servomotor"""
     rospy.loginfo("initializing servo" + str(sid))
-    global servomotor
-    servomotor = LX16A(sid)
+    motor = LX16A(sid)
     rospy.loginfo("initialization successful")
 
-def configAngle(min_angle: int, max_angle: int):
+    return motor
+
+def configAngle(min_angle: int, max_angle: int, servo: str):
     """Sets minimum and maximum angle for the servomotor
     
     Keyword arguments:
     min_angle -- minimum angle received as a parameter
     max_angle -- maximum angle received as a parameter"""
-    servomotor.angleLimitWrite(min_angle, max_angle)
+    servomotor[servo].angleLimitWrite(min_angle, max_angle)
 
-def initSubscriber(topic: str):
+def initSubscriber(topic: str, servo: str):
     """Initialize subscriber to given topic and calls moveServo when input is given
     
     Keyword arguments:
     topic -- ROS topic to subscribe to"""
     rospy.loginfo("initializing ROS subscriber to " + str(topic))
-    rospy.Subscriber(topic, Int64, moveServo)
+    rospy.Subscriber(topic, Int64, partial(moveServo, servo))
     rospy.loginfo("initialization successful")
 
-def staticStatusRequest() -> ServoStaticStatus:
+def staticStatusRequest(servo: str) -> ServoStaticStatus:
     """Gets the static status of the servomotor.
 
     Returns:
@@ -173,15 +184,15 @@ def staticStatusRequest() -> ServoStaticStatus:
     """
     status = ServoStaticStatus()
            
-    status.min_angle, status.max_angle = servomotor.angleLimitRead()    
-    VLimitMin, VLimitMax = servomotor.vInLimitRead()
+    status.min_angle, status.max_angle = servomotor[servo].angleLimitRead()    
+    VLimitMin, VLimitMax = servomotor[servo].vInLimitRead()
     status.max_voltage = VLimitMax / 1000
     status.min_voltage = VLimitMin /1000
-    status.max_temperature = servomotor.tempMaxLimitRead()
+    status.max_temperature = servomotor[servo].tempMaxLimitRead()
 
     return status
 
-def dynamicStatusRequest() -> ServoDynamicStatus:
+def dynamicStatusRequest(servo: str) -> ServoDynamicStatus:
     """Gets the dynamic status of the servomotor.
     
     Returns:
@@ -189,16 +200,16 @@ def dynamicStatusRequest() -> ServoDynamicStatus:
     """
     status = ServoDynamicStatus()
     
-    status.input_voltage = servomotor.vInRead() / 1000
-    status.offset_angle = servomotor.angleOffsetRead()
-    status.id = servomotor.IDRead()
-    status.temperature = servomotor.tempRead()
-    status.physical_pos = servomotor.getPhysicalPos()
-    status.virtual_pos = servomotor.getVirtualPos()
-    status.mode = servomotor.servoMotorModeRead()
-    status.loaded = servomotor.loadOrUnloadRead()
-    status.LED = servomotor.LEDCtrlRead()
-    status.LED = servomotor.LEDErrorRead()
+    status.input_voltage = servomotor[servo].vInRead() / 1000
+    status.offset_angle = servomotor[servo].angleOffsetRead()
+    status.id = servomotor[servo].IDRead()
+    status.temperature = servomotor[servo].tempRead()
+    status.physical_pos = servomotor[servo].getPhysicalPos()
+    status.virtual_pos = servomotor[servo].getVirtualPos()
+    status.mode = servomotor[servo].servoMotorModeRead()
+    status.loaded = servomotor[servo].loadOrUnloadRead()
+    status.LED = servomotor[servo].LEDCtrlRead()
+    status.LED = servomotor[servo].LEDErrorRead()
 
     return status
 

@@ -89,10 +89,10 @@ TEST(ForwardKinematics, RotationAroundZaxis)
    total_movement = forward_kinematics.calculateForwardKinematics(*twist_msg);
    
    // Check if the movement was calculated correctly, allowing an absolute error of 0.001
-   ASSERT_NEAR(total_movement.at(0), 3.571, 0.001);
-   ASSERT_NEAR(total_movement.at(1), 3.571, 0.001);
-   ASSERT_NEAR(total_movement.at(2), 3.571, 0.001);
-   ASSERT_NEAR(total_movement.at(3), 3.571, 0.001);
+   ASSERT_NEAR(total_movement.at(0), -3.571, 0.001);
+   ASSERT_NEAR(total_movement.at(1), -3.571, 0.001);
+   ASSERT_NEAR(total_movement.at(2), -3.571, 0.001);
+   ASSERT_NEAR(total_movement.at(3), -3.571, 0.001);
 }
 
 int main(int argc, char **argv)

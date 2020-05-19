@@ -81,7 +81,7 @@ namespace control {
     
         // calculate angular component of movement
         const double factor_rot = distance_wheels_ / wheel_diameter_;
-        const double w_angular = twist_msg.angular.z * factor_rot;  // Todo check if a minus needs to be insert: -twist_msg.angular.z * factor_rot
+        const double w_angular = -twist_msg.angular.z * factor_rot; 
       
         // calculate velocity
         double w[Motors::COUNT_MOTORS] = { 0.0 };

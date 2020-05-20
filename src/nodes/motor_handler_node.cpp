@@ -4,8 +4,11 @@
  */
 #include "motor_handler_node.h"
 
-namespace officerobot
-{
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 
 MotorHandlerNode::MotorHandlerNode(void)
 {
@@ -44,13 +47,13 @@ bool MotorHandlerNode::initialize(ros::NodeHandle& privNh, ros::NodeHandle& nh)
       if(motor_configurations_[motorIdx].is_enabled == true)
       {
         //Initialize publisher motor_state and the subscriber motor_control for every enabled motor
-        pub_motor_states_[motorIdx]   = nh.advertise<officerobot::MotorState>("/officerobot/motor_state_" + std::to_string(motorIdx), 1);     
-        sub_motor_controlls_[motorIdx] = nh.subscribe<officerobot::MotorControl>("/officerobot/motor_control_" + std::to_string(motorIdx), 1, boost::bind(&MotorHandlerNode::MotorHandlerNodeCallback, this, _1, motorIdx));
+        pub_motor_states_[motorIdx]   = nh.advertise<abidat_robot_control::MotorState>("/officerobot/motor_state_" + std::to_string(motorIdx), 1);     
+        sub_motor_controlls_[motorIdx] = nh.subscribe<abidat_robot_control::MotorControl>("/officerobot/motor_control_" + std::to_string(motorIdx), 1, boost::bind(&MotorHandlerNode::MotorHandlerNodeCallback, this, _1, motorIdx));
         ROS_INFO("The Publisher and the Subscriber for motor %i were started successfully", motorIdx);
       }
     }
     //Initialize Publisher Device_Info 
-    pub_device_info = nh.advertise<officerobot::DeviceInfo>("/officerobot/device_info", 1);
+    pub_device_info = nh.advertise<abidat_robot_control::DeviceInfo>("/officerobot/device_info", 1);
     ROS_INFO("The Publisher for the BrickPi device info  was started successfully");  
   }
 
@@ -171,7 +174,7 @@ bool MotorHandlerNode::readMotorConfigurations(ros::NodeHandle& privNh)
   return true;
 }
 
-void MotorHandlerNode::MotorHandlerNodeCallback(const officerobot::MotorControlConstPtr& motor_control_msg, size_t motorIdx)
+void MotorHandlerNode::MotorHandlerNodeCallback(const abidat_robot_control::MotorControlConstPtr& motor_control_msg, size_t motorIdx)
 {
   if(ros::ok  && is_running_)
   {
@@ -217,7 +220,7 @@ void MotorHandlerNode::MotorHandlerNodeCallback(const officerobot::MotorControlC
 
 }
 
-bool MotorHandlerNode::initBrickPi(void)
+bool MotorHandlerNode::initBrickPi()
 {
   // Make sure that the BrickPi3 is communicating and that the firmware is compatible with the drivers.
   // Note: Library will return 0 if no errors detected. (#define ERROR_NONE 0)
@@ -274,7 +277,7 @@ void MotorHandlerNode::readBrickPiValues(void)
     {
       if(motor_configurations_[motorIdx].is_enabled == true) //maybe instead of  check is.enable, check if the publisher was started 
       {
-        officerobot::MotorState motor_state_msg;
+        abidat_robot_control::MotorState motor_state_msg;
         std_msgs::Header header_;
 
         header_.seq = 0;
@@ -295,7 +298,7 @@ void MotorHandlerNode::readBrickPiValues(void)
     }
 
     //Publish Device info 
-    officerobot::DeviceInfo device_info_msg;
+    abidat_robot_control::DeviceInfo device_info_msg;
     std_msgs::Header header_;
 
     header_.seq = 0;
@@ -356,7 +359,12 @@ void MotorHandlerNode::TimeOutSafety(void)
   }
 }
 
-} //end namespace officerobot
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat
+
 
 int main(int argc, char** argv)
 {
@@ -364,7 +372,7 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
   ros::NodeHandle privNh("~");
 
-  officerobot::MotorHandlerNode motorHandle;
+  abidat::robot::control::MotorHandlerNode motorHandle;
   motorHandle.initialize(privNh, nh);
 
   ros::spin(); // starts a loop 

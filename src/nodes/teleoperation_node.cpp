@@ -1,6 +1,10 @@
 #include "teleoperation_node.h"
 
-namespace officerobot {
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 
     /**
      * \brief Reads the parameters from the parameter server and maps them into the input mapper, It also sets the activation function.
@@ -139,13 +143,17 @@ namespace officerobot {
             keyboard_input_.start();
         }
     }
-}
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat
 
 int main(int argc, char** argv) {
 
     ros::init(argc, argv, "TeleoperationNode");
 
-    officerobot::TeleoperationNode teleoperation_node;
+    abidat::robot::control::TeleoperationNode teleoperation_node;
 
     ros::spin();
 

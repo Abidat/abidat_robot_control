@@ -8,24 +8,17 @@
 #include "forward_kinematic_calculation.h"
 #include "forward_kinematic.h"
 
-namespace officerobot {
+#include "abidat_robot_control/MotorControl.h" 
 
-void ForwardKinematicNode::initialize(ros::NodeHandle node, ros::Subscriber velocity_subscriber){
+namespace abidat {
 
-  // Initialize publisher
-  for(std::size_t i = 0; i < forward_kinematics_->getNumMotors(); ++i)  
-    pub_motor_control_[i] = node.advertise<officerobot::MotorControl>("/officerobot/motor_control_" + i, 1);
-  
-  // Initialize subscriber
-  velocity_subscriber = node.subscribe<geometry_msgs::Twist>("/officerobot/cmd_vel", 1, &ForwardKinematicNode::callback, this);
-}
+namespace robot {
 
-bool ForwardKinematicNode::readParams(){
+namespace control {
 
+bool ForwardKinematicNode::initialize(ros::NodeHandle& private_nh, ros::NodeHandle& node)
+{
   ROS_INFO("Start setting the Robot parameters");
-
-  //Setup private node handler
-  ros::NodeHandle private_nh("~");
 
   // Getting needed parameters
   if(private_nh.hasParam("distance_wheels"))
@@ -40,19 +33,28 @@ bool ForwardKinematicNode::readParams(){
     ROS_INFO("Parameter wheel_diameter is set to %f", this->wheel_diameter_);
   }
 
-  // check if values are in a valid range
-  if(distance_wheels_ > 0.0 && wheel_diameter_ > 0.0)
+  // check if values are in a valid range 
+  if(!(distance_wheels_ > 0.0 && wheel_diameter_ > 0.0))
   {
-    return true;
-  }
-
-  else
-  {
-    ROS_ERROR("The wheel distance, the wheel diameter and the distance of the axes must be larger than 0");
+    ROS_ERROR("The wheel distance and the wheel diameter must be larger than 0"); 
     return false;
   }
+
   // TODO: make forward kinematics selectable using a factory
-  forward_kinematics_ = std::make_shared<officerobot::OfficeRobotForwardKinematics>(distance_wheels_, wheel_diameter_);
+  forward_kinematics_ = std::make_shared<ForwardKinematics>(distance_wheels_, wheel_diameter_);
+
+  // Initialize publisher
+  for(std::size_t i = 0; i < forward_kinematics_->getNumMotors(); ++i) {
+    const std::string topic_name = "/officerobot/motor_control_" + std::to_string(i);
+    ROS_INFO("ForwardKinematic: advertise publisher \"%s\".", topic_name.c_str());
+    pub_motor_control_[i] = node.advertise<abidat_robot_control::MotorControl>(topic_name, 1);
+  }
+
+  // Initialize subscriber
+  velocity_subscriber_ = node.subscribe<geometry_msgs::Twist>("/officerobot/cmd_vel", 1, &ForwardKinematicNode::callback, this);
+
+
+  return true;
 }
 
 void ForwardKinematicNode::callback(const geometry_msgs::TwistConstPtr& twist_msg){
@@ -62,7 +64,7 @@ void ForwardKinematicNode::callback(const geometry_msgs::TwistConstPtr& twist_ms
 
   velocity = forward_kinematics_->calculateForwardKinematics(*twist_msg);
   
-  officerobot::MotorControl motor_control_msg;
+  abidat_robot_control::MotorControl motor_control_msg;
   // Todo: Change message type to twist stamp and use header from this message instead
   motor_control_msg.header.stamp = ros::Time::now();
   motor_control_msg.header.frame_id = "base_link";
@@ -74,13 +76,23 @@ void ForwardKinematicNode::callback(const geometry_msgs::TwistConstPtr& twist_ms
   }
 }
 
-} //end namespace officerobot
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat
 
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "ForwardKinematicNode");
-    officerobot::ForwardKinematicNode officeRobot;
-    ros::spin();
+  ros::init(argc, argv, "ForwardKinematicNode");
+  abidat::robot::control::ForwardKinematicNode kinematic;
+  ros::NodeHandle private_nh("~");
+  ros::NodeHandle nh;
 
-    return 0;
+  if (!kinematic.initialize(private_nh, nh))
+    return 1;
+
+  ros::spin();
+
+  return 0;
 }

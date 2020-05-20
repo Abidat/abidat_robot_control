@@ -4,11 +4,11 @@
   <!-- launch fully automous system -->
 
   <!-- include omni wheel drive -->
-  <include file="$(find officerobot)/launch/omniwheel_drive.launch" />
+  <include file="$(find abidat_robot_control)/launch/omniwheel_drive.launch" />
 
   <!-- include sensors -->
-  <include file="$(find officerobot)/launch/driver_cam.launch" />
-  <include file="$(find officerobot)/launch/ydlidar.launch" />
+  <include file="$(find abidat_robot_control)/launch/driver_cam.launch" />
+  <include file="$(find abidat_robot_control)/launch/ydlidar.launch" />
 
   <!-- tf link to the ground plane -->
   <node pkg="tf" type="static_transform_publisher" name="base_footprint_to_base" args="0.0 0.0 0.0 0.0 0.0 0.0 /base_link /base_footprint 40" />

@@ -6,6 +6,12 @@
 #include <functional>
 #include <atomic>
 
+namespace abidat {
+
+namespace robot {
+
+namespace control {
+
 class GetKeyboardInput
 {
 public:
@@ -60,3 +66,9 @@ private:
 	std::function<void(const int)> callback_; //> callback function that is called by received key input
 	std::atomic<bool> running_{false}; //> flag that indicates if the background capture thread is running
 };
+
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat

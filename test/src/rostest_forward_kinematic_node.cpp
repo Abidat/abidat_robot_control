@@ -4,9 +4,15 @@
  */
 
 #include <gtest/gtest.h>
-#include <nodes/officerobot_forward_kinematics.h>
+#include <nodes/forward_kinematic_node.h>
 #include <ros/ros.h>
-#include "forward_kinematics_calculations.h"
+#include "forward_kinematic_calculation.h"
+
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 
 
 /**
@@ -19,7 +25,7 @@ public:
   { 
     // initialize publisher and subscriber
     for(std::size_t i = 0; i < forward_kinematics_.getNumMotors(); ++i)
-      pub_motor_control_[i] = nh_.advertise<officerobot::MotorControl>("/officerobot/motor_control_" + i, 1);
+      pub_motor_control_[i] = nh_.advertise<abidat_robot_control::MotorControl>("/officerobot/motor_control_" + i, 1);
 
     pub_twist_msg_ = nh_.advertise<geometry_msgs::Twist>("/officerobot/cmd_vel", 1);
     velocity_subscriber_ = nh_.subscribe<geometry_msgs::Twist>("/officerobot/cmd_vel", 1, &TestForwardKinematic::callBackTwist, this);        
@@ -28,13 +34,16 @@ public:
   // initialize twist messages for linear and angular movement
   void publishTwistMsg()
   {
-    ROS_INFO("Publish twist message");
+    
     geometry_msgs::Twist twist_msg;
 
     twist_msg.linear.x = 0;
     twist_msg.linear.y = 0;
     twist_msg.angular.z = 0;
-
+    
+    ROS_INFO("Publish twist message x = %s, y = %s, z = %s", std::to_string(twist_msg.linear.x).c_str(),
+                                                             std::to_string(twist_msg.linear.y).c_str(),
+                                                             std::to_string(twist_msg.angular.z).c_str());
     pub_twist_msg_.publish(twist_msg);
   }
   
@@ -64,31 +73,30 @@ private:
   {
     ROS_INFO("Callback Function");
 
-    // check if the subscribed messages are the same as the published ones -> TODO: remove hard coded numbers?
     if (twist_msg->linear.x == 0 && twist_msg->linear.y == 0 && twist_msg->angular.z == 0)
     {
       correct_twist_msg_received_ = true;
     }
     
     //get total movement from forward kinematics
-    std::vector<double> total_movement;
+    std::vector<double> velocity;
   
-    total_movement = forward_kinematics_.calculateForwardKinematics(*twist_msg);
+    velocity = forward_kinematics_.calculateForwardKinematics(*twist_msg);
 
-    officerobot::MotorControl motor_control_msg;
+    abidat_robot_control::MotorControl motor_control_msg;
 
     motor_control_msg.header.stamp = ros::Time::now();
     motor_control_msg.header.frame_id = "base_link";
 
-    for(std::size_t i = 0; i < total_movement.size(); i++)
+    for(std::size_t i = 0; i < velocity.size(); i++)
     {
-      motor_control_msg.speed = static_cast<std::int16_t>(convertRADToRPM(total_movement[i]));
+      motor_control_msg.speed = static_cast<std::int16_t>(convertRADToRPM(velocity[i]));
       pub_motor_control_[i].publish(motor_control_msg);
     }
   }
 
-  // create OfficeRobotForwardKinematics object with wheel distance and wheel diameter
-  officerobot::OfficeRobotForwardKinematics forward_kinematics_{0.2, 0.056};
+  // create ForwardKinematics object with wheel distance and wheel diameter
+  ForwardKinematics forward_kinematics_{0.2, 0.056};
   
   ros::NodeHandle nh_;
   std::array<ros::Publisher, 4> pub_motor_control_;
@@ -110,11 +118,16 @@ TEST_F(TestForwardKinematic, MessageReceived)
   ASSERT_TRUE(this->correctTwistMsgReceived());
 }
 
+} //end namespace
+
+} //end namespace
+
+} //end namespace
+
 
 int main(int argc, char** argv)
 {
-  //TestForwardKinematic forward_kin;
   ::testing::InitGoogleTest(&argc, argv);
-  ros::init(argc, argv, "basic_function_test");
+  ros::init(argc, argv, "test_forward_kinematic");
   return RUN_ALL_TESTS();
 }

@@ -19,6 +19,12 @@
 #include "activation_function.h"
 #include "get_keyboard_input.h"
 
+namespace abidat {
+
+namespace robot {
+
+namespace control {
+
 /**
  * \brief Indices for the axes vector of the joy message. Can be set in the tele_op.yaml parameter file.
 */
@@ -105,3 +111,9 @@ private:
   MaxVelocities max_velocities_{-1, -1};  
   float linear_keyboard_speed_;
 };
+
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat

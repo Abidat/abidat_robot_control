@@ -7,7 +7,7 @@
 
 
 //Custom OfficeRobot State Messages
-#include <officerobot/MotorControl.h>
+#include <abidat_robot_control/MotorControl.h>
 
 //ROS
 #include <ros/ros.h>
@@ -24,8 +24,12 @@
 #include <vector>
 
 
-namespace officerobot
-{
+namespace abidat {
+
+namespace robot {
+
+namespace control {
+
   /**
    * \brief Interface with abstract methods for forward kinematics calculation  
    */
@@ -40,7 +44,7 @@ namespace officerobot
   /**
    *\brief Class for the Omniwheel Robot "Marvin" 
    */
-  class OfficeRobotForwardKinematics : public ForwardKinematicsCalculation
+  class ForwardKinematics : public ForwardKinematicsCalculation
   {
     public:
       /**
@@ -48,7 +52,7 @@ namespace officerobot
        * \param distance_wheels distancse between two wheels
        * \param wheel_diamter diameter of each wheel 
        */
-      OfficeRobotForwardKinematics(const double distance_wheels, const double wheel_diameter)
+      ForwardKinematics(const double distance_wheels, const double wheel_diameter)
         : distance_wheels_(distance_wheels),
           wheel_diameter_(wheel_diameter)
       {
@@ -77,7 +81,7 @@ namespace officerobot
     
         // calculate angular component of movement
         const double factor_rot = distance_wheels_ / wheel_diameter_;
-        const double w_angular = twist_msg.angular.z * factor_rot;  // Todo check if a minus needs to be insert: -twist_msg.angular.z * factor_rot
+        const double w_angular = -twist_msg.angular.z * factor_rot; 
       
         // calculate velocity
         double w[Motors::COUNT_MOTORS] = { 0.0 };
@@ -99,7 +103,7 @@ namespace officerobot
       /**
        * \brief Destroy the Office Robot Forward Kinematics object
        */
-      ~OfficeRobotForwardKinematics() = default;
+      ~ForwardKinematics() = default;
 
     private:
       struct Motors {
@@ -116,4 +120,10 @@ namespace officerobot
       double wheel_diameter_; 
 
   };
-}//end namespace officerobot
+  
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat
+

@@ -42,10 +42,12 @@ struct InputKeys
 {
 	enum 
 	{
-		UP = 259,
-		DOWN = 258,
-		LEFT = 260,
-		RIGHT = 261,
+    KEY_Q = 113,
+		KEY_W = 119,
+		KEY_E = 101,
+		KEY_A = 97,
+		KEY_S = 115,
+    KEY_D = 100
 	};
 };
 
@@ -55,10 +57,12 @@ class InputMapping
 public:
   InputMapping() = default;
 
-  inline void setIndices(const InputIndicies& indices)                 { input_indicies_        = indices; }
-  inline void setMaxVelocities(const MaxVelocities& max)               { max_velocities_        = max; }
-  inline void setActivationFunction(const ActivationFunction function) { activation_function_   = function; }
-  inline void setKeyboardSpeed(const float& linear_keyboard_speed)     { linear_keyboard_speed_ = linear_keyboard_speed; }
+  inline void setIndices(const InputIndicies& indices)                   { input_indicies_        = indices; }
+  inline void setMaxVelocities(const MaxVelocities& max)                 { max_velocities_        = max; }
+  inline void setActivationFunction(const ActivationFunction function)   { activation_function_   = function; }
+  inline void setLinearKeyboardSpeed(const float& linear_keyboard_speed) { linear_keyboard_speed_  = linear_keyboard_speed; }
+  inline void setAngularKeyboardSpeed(const float& angular_keyboard_speed){ angular_keyboard_speed_ = angular_keyboard_speed; }
+
 
   inline InputIndicies getIndices()        {return input_indicies_;}
   inline MaxVelocities getVelocities()     {return max_velocities_;}
@@ -104,4 +108,5 @@ private:
   InputIndicies input_indicies_{-1, -1, -1};
   MaxVelocities max_velocities_{-1, -1};  
   float linear_keyboard_speed_;
+  float angular_keyboard_speed_;
 };

@@ -11,7 +11,8 @@ namespace officerobot {
         InputIndicies indices;
         MaxVelocities maxVelocities;
         std::string activation_function;
-        float linear_keyboard_speed;
+        float linear_keyboard_speed = 0.5;
+        float angular_keyboard_speed = 0.75;
 
         //getting parameters from the parameter server
         if(private_nh.hasParam("index_linear_speed_x"))
@@ -80,6 +81,18 @@ namespace officerobot {
         {
             ROS_INFO("TeleoperationNode::readParameters(): linear_keyboard_speed not found. Using the default value.");
         }
+
+        if(private_nh.hasParam("angular_keyboard_speed"))
+        {
+            private_nh.getParam("angular_keyboard_speed", angular_keyboard_speed);
+            ROS_INFO("TeleoperationNode::readParameters(): angular_keyboard_speed %f.", angular_keyboard_speed);
+            std::cout << angular_keyboard_speed;
+        }
+        else
+        {
+            ROS_INFO("TeleoperationNode::readParameters(): angular_keyboard_speed not found. Using the default value.");
+        }
+
         if(private_nh.hasParam("keyboard_enable"))
         {
             private_nh.getParam("keyboard_enable", keyboard_enable_);
@@ -95,7 +108,8 @@ namespace officerobot {
         input_mapper_.setIndices(indices);
         input_mapper_.setMaxVelocities(maxVelocities);
         input_mapper_.setActivationFunction(createActivationFunction(activation_function));
-        input_mapper_.setKeyboardSpeed(linear_keyboard_speed);
+        input_mapper_.setLinearKeyboardSpeed(linear_keyboard_speed);
+        input_mapper_.setAngularKeyboardSpeed(angular_keyboard_speed);
 
         return true;
     }

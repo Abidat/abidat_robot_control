@@ -1,5 +1,5 @@
 # Keyboard options
-keyboard_enable:    false    # True if keyboard is used to control, False otherwise 
+keyboard_enable:    true    # True if keyboard is used to control, False otherwise 
 linear_keyboard_speed: 0.60 # Set driving speed when using keyboard input
 angular_keyboard_speed: 0.50
 

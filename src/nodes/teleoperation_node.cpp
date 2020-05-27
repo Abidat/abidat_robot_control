@@ -85,8 +85,6 @@ namespace officerobot {
         if(private_nh.hasParam("angular_keyboard_speed"))
         {
             private_nh.getParam("angular_keyboard_speed", angular_keyboard_speed);
-            ROS_INFO("TeleoperationNode::readParameters(): angular_keyboard_speed %f.", angular_keyboard_speed);
-            std::cout << angular_keyboard_speed;
         }
         else
         {
@@ -109,7 +107,7 @@ namespace officerobot {
         input_mapper_.setMaxVelocities(maxVelocities);
         input_mapper_.setActivationFunction(createActivationFunction(activation_function));
         input_mapper_.setLinearKeyboardSpeed(linear_keyboard_speed);
-        input_mapper_.setAngularKeyboardSpeed(angular_keyboard_speed);
+        input_mapper_.setAngularKeyboardSpeed(angular_keyboard_speed) ;
 
         return true;
     }

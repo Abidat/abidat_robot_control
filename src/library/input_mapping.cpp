@@ -142,12 +142,12 @@ std::optional<geometry_msgs::Twist> InputMapping::computeVelocity(const int& key
         case InputKeys::KEY_Q: // turn to the left
             twistMsg.linear.x = 0;
             twistMsg.linear.y = 0;
-            twistMsg.angular.z = linear_keyboard_speed_;    // TODO: Doesn't work with seperat member. angular_keyboard_speed_ return the wrong value! 
+            twistMsg.angular.z = angular_keyboard_speed_;    
             break;
         case InputKeys::KEY_E: // turn to the right
             twistMsg.linear.x = 0;
             twistMsg.linear.y = 0;
-            twistMsg.angular.z = -linear_keyboard_speed_;   // TODO: Doesn't work with seperat member. angular_keyboard_speed_ return the wrong value! 
+            twistMsg.angular.z = -angular_keyboard_speed_;  
             break;
         default:
             ROS_INFO("Illegal keyboard input");

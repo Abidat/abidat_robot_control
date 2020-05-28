@@ -41,12 +41,19 @@ To test if the node is publishing and subscribing correctly you can run this com
 
 Teleoperation node is used to remotely control the robot by using a regular keyboard or a controller (currently the node parameters - in param/tele_op.yaml file - are set for PS3 Controller. The node works also with different controllers, but parameters need to be adjusted).
 
+## Dependencies
+
+In order to compile this node you need the C-library "ncurses" for Linux.
+
 ## Parameters
 
     keyboard_enable: <bool>
 enables or disables the ability to use a keyboard to control the robot.
 
     linear_keyboard_speed: <velocity>
+sets a fix velocity for linear movement for keyboard input. Use floats between 0 and 1
+
+    angular_keyboard_speed: <velocity>
 sets a fix velocity for linear movement for keyboard input. Use floats between 0 and 1
 
     index_linear_speed_x: 1
@@ -67,13 +74,13 @@ The maximum angular speed the robot can reach in radian per second.
     activation_function: "linear"
 The type of activation function that is used. Possible values: linear, exponential
 
-## start teleop node
+## Start Teleoperation Node
 
 To use the control the robot remotely we use the teleoperation node. Start it with:
 
     roslaunch officerobot remote_control.launch
 
-## used topics
+## Used Topics
 
 To communicate with the teleoperation node, there are 2 given topics to speak and listen to.
 
@@ -85,7 +92,28 @@ After getting a joy message or a keyboard input the teleoperation node remaps th
 
     /officerobot/cmd_vel
 
-## debugging
+## Keyboard Control
+
+The control keys are not able to be changed and might be parameterizable in the future. The robot can be moved linear and angular with overall 6 keys.
+
+### Linear Movement
+
+    movement forwards: __W__
+    
+    movement rightwards: __D__
+    
+    movement backwards: __S__
+
+    movement leftwards: __A__
+
+### Angular Movement
+
+    turn left: __Q__
+
+    turn right: __E__
+    
+
+## Debugging
 
 To catch and see the published twist messages use the following command:
 
@@ -95,12 +123,12 @@ To catch and see the published twist messages use the following command:
 
 The servo control node is used to communicate and control the servomotor Lewan Soul LX-16A. It is able to change its angle and give information about his current status. Please follow these instructions to use it properly!
 
-## Hardware setup
+## Hardware Setup
 
 First you need to setup the LX-16A servo by connecting it to the circuit board. It is possible to connect more servos but till now this program only works with one.
 After connecting the servo to it, it is needed to connect a power supply with at least <volt> and at most <volt> voltage and to the device wanted to control it with, via usb-c connection.
 
-## Software preperation
+## Software Preparation
 
 In order to prepare the Linux OS for this program please execute [udev.sh](./udev/udev.sh).<br/>
 Now the OS is ready and no further dependencies are required.
@@ -119,13 +147,13 @@ ros topic which the node should publish the servos status
     subscriber_topic: "<topic>"
 ros topic which the node should recieve the new angles
 
-## start servo control node
+## Start Servo Control Node
 
 To use the servos on the robot we use the servocontrol node. Start it with:
 
     roslaunch officerobot servo.launch
 
-## used topics
+## Used Topics
 
 To communitcate with the servomotor, there are 2 given topics to speak and listen to.
 
@@ -137,7 +165,7 @@ The servo is constantly publishing its own status with static and dynamic values
 
     /servo/info
 
-## debugging
+## Debugging
 
 In order to get move the servomotor into your wished angle, you should use the following command:
     

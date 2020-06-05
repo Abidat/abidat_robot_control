@@ -5,7 +5,7 @@
 
   <!-- include omni wheel drive -->
   <include file="$(find abidat_robot_control)/launch/omniwheel_drive.launch" />
-  <include file="$(find abidat_robot_control)/launch/remote_control.launch" />
+
   <!-- include sensors -->
   <include file="$(find abidat_robot_control)/launch/driver_cam.launch" />
   <include file="$(find abidat_robot_control)/launch/ydlidar.launch" />

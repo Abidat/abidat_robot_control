@@ -114,6 +114,7 @@ private:
   InputIndicies input_indicies_{-1, -1, -1};
   MaxVelocities max_velocities_{-1, -1};  
   float linear_keyboard_speed_;
+  float angular_keyboard_speed_;
 };
 
 } //end namespace control

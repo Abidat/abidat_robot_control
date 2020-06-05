@@ -2,6 +2,11 @@
 #include <input_mapping.h>
 #include <ros/console.h>
 
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 /**
  * \brief Tests if an object of type InputMapping is correctly instantiated.
  *        Tests if error is correctly thrown when trying to use two empty vectors for computing the velocity
@@ -85,7 +90,11 @@ TEST(InputMapper, ComputeVelocityLinearActivation)
   EXPECT_EQ(twistMessage->angular.z, -1.0);
 }
 
+} //end namespace control
 
+} // end namespace robot
+
+} // end namespace abidat
 
 int main(int argc, char **argv)
 {

@@ -39,8 +39,11 @@ class Parameters:
         self.pub_topic = None
         self.sub_topic = None
     
-def readParam():
-    """Read parameters from the parameter server"""
+def readParam() -> Parameters:
+    """Read parameters from the parameter server
+    
+    Returns:
+    param - read parameters from the parameterserver and save them in Parameters class"""
     param = Parameters()
     param.servo_id = rospy.get_param('~servo_id')
     param.servo_port = rospy.get_param('~servo_port')
@@ -95,7 +98,7 @@ def getAndPublishServoStatus(my_time: time):
         servo_pub.publish(message)
 
 def initPublisher(topic: str):
-    """initilizes publisher
+    """initialize publisher
     
     Keyword arguments:
     topic -- ROS topic information should be published to"""
@@ -134,8 +137,8 @@ def initServoBus(device: str):
 def initServo(sid: int):
     """Initialize servomotor
 
-    Keyword arugments:
-    sid -- id of choosen servomotor"""
+    Keyword arguments:
+    sid -- id of chosen servomotor"""
     rospy.loginfo("initializing servo" + str(sid))
     global servomotor
     servomotor = LX16A(sid)
@@ -144,7 +147,7 @@ def initServo(sid: int):
     
 
 def initSubscriber(topic: str):
-    """Initilize subscriber to given topic, receiving a integer and calling the function 'moveServo'
+    """Initialize subscriber to given topic
     
     Keyword arguments:
     topic -- ROS topic to subscribe to"""

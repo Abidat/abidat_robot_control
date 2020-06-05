@@ -30,8 +30,13 @@
 #include "input_mapping.h"
 #include "get_keyboard_input.h"
 
-namespace officerobot {
-  
+namespace abidat {
+
+namespace robot {
+
+namespace control {
+
+
 class TeleoperationNode 
 {
 public:
@@ -61,7 +66,11 @@ private:
   GetKeyboardInput keyboard_input_{std::bind(&TeleoperationNode::keyCallback, this, std::placeholders::_1)};
 };
 
-}
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat
 
 #endif
 

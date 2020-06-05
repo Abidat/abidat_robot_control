@@ -1,0 +1,6 @@
+<launch>
+
+  <test pkg="abidat_robot_control" test-name="rostest_forward_kinematic" type="rostest_forward_kinematic_node" time-limit="100000000">
+
+  </test>
+</launch>

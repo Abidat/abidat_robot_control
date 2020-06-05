@@ -12,6 +12,11 @@
 
 #include "input_mapping.h"
 
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 
 /**
  * \brief Checks if a given indices structure has been only initialized.
@@ -156,3 +161,9 @@ std::optional<geometry_msgs::Twist> InputMapping::computeVelocity(const int& key
 
     return twistMsg;
 }
+
+} //end namespace control
+
+} //end namespace robot
+
+} //end namespace abidat

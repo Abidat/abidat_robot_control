@@ -14,9 +14,9 @@
 
 //Custom OfficeRobot State Messages
 // \todo: actually it can be removed
-#include <officerobot/MotorState.h>
-#include <officerobot/DeviceInfo.h>
-#include <officerobot/MotorControl.h>
+#include <abidat_robot_control/MotorState.h>
+#include <abidat_robot_control/DeviceInfo.h>
+#include <abidat_robot_control/MotorControl.h>
 
 //Thread and thread management
 #include <thread>
@@ -31,8 +31,11 @@
  * @brief The namespace used for OfficeRobot
  * 
  */
-namespace officerobot
-{
+namespace abidat {
+
+namespace robot {
+
+namespace control {
 
 /**
  * @brief This class handles a brick pie motor using the brick pie library. This class is a ROS node.
@@ -153,7 +156,7 @@ class MotorHandlerNode
      * 
      * @param motor_control Velocity that is published into the topic
      */
-    void MotorHandlerNodeCallback(const officerobot::MotorControlConstPtr& motor_control,size_t motorIdx);
+    void MotorHandlerNodeCallback(const abidat_robot_control::MotorControlConstPtr& motor_control,size_t motorIdx);
     
     /**
      * @brief This function instantiate the BrickPi and checks if the connection with the harware is succesfull or not.
@@ -246,5 +249,8 @@ class MotorHandlerNode
   
   };
 
-} //end namespace officerobot
+} //end namespace control
 
+} //end namespace robot
+
+} //end namespace abidat

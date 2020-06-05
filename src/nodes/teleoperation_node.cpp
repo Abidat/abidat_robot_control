@@ -95,13 +95,13 @@ namespace control {
             ROS_INFO("TeleoperationNode::readParameters(): angular_keyboard_speed not found. Using the default value.");
         }
 
-        if(private_nh.hasParam("keyboard_enable"))
+        if(private_nh.hasParam("use_keyboard"))
         {
-            private_nh.getParam("keyboard_enable", keyboard_enable_);
+            private_nh.getParam("use_keyboard", keyboard_enable_);
         }
         else
         {
-            ROS_INFO("TeleoperationNode::readParameters(): keyboard_enable not found. Using the default value.");
+            ROS_INFO("TeleoperationNode::readParameters(): use_keyboard not found. Using the default value.");
         }
         
 

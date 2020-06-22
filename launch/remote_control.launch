@@ -20,7 +20,7 @@ joy_node needs to be installed following this tutorial: https://wiki.ros.org/joy
     
     <!-- Remapping to the same name as best practice to show the user that this topic exists with this name.-->
     <remap from="/joy_node/joy" to="/joy_node/joy" />
-    <param name="use_keyboard" value="$(arg use_keyboard)" type="double"> </param>
+    <param name="use_keyboard" value="$(arg use_keyboard)"> </param>
     <rosparam file="$(find abidat_robot_control)/param/tele_op.yaml"> </rosparam>
   </node>
 </launch>

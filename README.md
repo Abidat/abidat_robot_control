@@ -32,7 +32,7 @@ This is the ros topic which the node should subscribe to the velocity.
 
 To test if the node is publishing and subscribing correctly you can run this command:
 
-    rostest officerobot basic_function_test.launch
+    rostest abidat_robot_control basic_function_test.launch
 
 #  Teleoperation Node
 
@@ -43,9 +43,6 @@ Teleoperation node is used to remotely control the robot by using a regular keyb
 In order to compile this node you need the C-library "ncurses" for Linux.
 
 ## Parameters
-
-    keyboard_enable: <bool>
-Enables or disables the ability to use a keyboard to control the robot.
 
     linear_keyboard_speed: <velocity>
 Sets a fix velocity for linear movement for keyboard input. Use floats between 0 and 1.
@@ -73,9 +70,13 @@ The type of activation function that is used. Possible values: linear, exponenti
 
 ## Start Teleoperation Node
 
-To use the control the robot remotely we use the teleoperation node. Start it with:
+To control the robot remotely with the gamepad/controller we use the teleoperation node. Start it with:
 
-    roslaunch officerobot remote_control.launch
+    roslaunch abidat_robot_control remote_control.launch
+
+To control the robot with the keyboard please start the teleoperation node with:
+
+    roslaunch abidat_robot_control remote_control.launch use_keyboard:=true
 
 ## Used Topics
 
@@ -148,7 +149,7 @@ Ros topic which the node should receive the new angles.
 
 To use the servos on the robot we use the servo control node. Start it with:
 
-    roslaunch officerobot servo.launch
+    roslaunch abidat_robot_control servo.launch
 
 ## Used Topics
 

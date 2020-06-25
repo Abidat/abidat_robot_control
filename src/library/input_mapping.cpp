@@ -121,34 +121,43 @@ std::optional<geometry_msgs::Twist> InputMapping::computeVelocity(const std::vec
 std::optional<geometry_msgs::Twist> InputMapping::computeVelocity(const int& key)
 {
     geometry_msgs::Twist twistMsg;
-
-    float xVelocityValue;
-    float yVelocityValue;
-    float angularVelocityValue;
     
     switch (key)
     {
-        case InputKeys::UP:
+        case InputKeys::KEY_W:  // forwards
             twistMsg.linear.x = linear_keyboard_speed_;
             twistMsg.linear.y = 0;
+            twistMsg.angular.z = 0;
             break;
-        case InputKeys::RIGHT:
+        case InputKeys::KEY_A:  // leftwards
             twistMsg.linear.x = 0;
             twistMsg.linear.y = linear_keyboard_speed_;
+            twistMsg.angular.z = 0;
             break;
-        case InputKeys::DOWN:
+        case InputKeys::KEY_S:  // backwards
             twistMsg.linear.x = -linear_keyboard_speed_;
             twistMsg.linear.y = 0;
+            twistMsg.angular.z = 0;
             break;
-        case InputKeys::LEFT:
+        case InputKeys::KEY_D:  // rightwards
             twistMsg.linear.x = 0;
             twistMsg.linear.y = -linear_keyboard_speed_;
+            twistMsg.angular.z = 0;
+            break;
+        case InputKeys::KEY_Q: // turn to the left
+            twistMsg.linear.x = 0;
+            twistMsg.linear.y = 0;
+            twistMsg.angular.z = angular_keyboard_speed_;    
+            break;
+        case InputKeys::KEY_E: // turn to the right
+            twistMsg.linear.x = 0;
+            twistMsg.linear.y = 0;
+            twistMsg.angular.z = -angular_keyboard_speed_;  
             break;
         default:
             ROS_INFO("Illegal keyboard input");
             break;
     }
-    twistMsg.angular.z = 0;
 
     return twistMsg;
 }

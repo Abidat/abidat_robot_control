@@ -6,6 +6,7 @@ Controlles the robot via gamepad controller and publishes twist messages
 Make sure that the gamepad controller is connected via USB to the computer
 joy_node needs to be installed following this tutorial: https://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick
 -->
+  <arg name="use_keyboard" default="false"/>
   <arg name="joy_device" default="/dev/input/js0" />
 
   <!-- joy controller -->
@@ -19,6 +20,7 @@ joy_node needs to be installed following this tutorial: https://wiki.ros.org/joy
     
     <!-- Remapping to the same name as best practice to show the user that this topic exists with this name.-->
     <remap from="/joy_node/joy" to="/joy_node/joy" />
+    <param name="use_keyboard" value="$(arg use_keyboard)"> </param>
     <rosparam file="$(find abidat_robot_control)/param/tele_op.yaml"> </rosparam>
   </node>
 </launch>

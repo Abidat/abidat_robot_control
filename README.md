@@ -104,23 +104,23 @@ Now the OS is ready and no further dependencies are required.
 
 ## Parameters
 
-    servo_ids: <ID>
+    servo_id: <ID>
 IDs of the servomotor in use.
 
     servo_port: "<device>"
 Used file descriptor for usb servo control device.
 
     publisher_topic: "<topic>"
-Ros topic which the node should publish the servos status.
+Ros topic from which the node should publish the servos status.
 
     subscriber_topic: "<topic>"
-Ros topic which the node should receive the new angles.
+Ros topic from which the node should receive the new angles.
 
-    min_angle: <degree>
-Defines the lowest legal and usable angle for the servomotor
+    minimum_angle: <degree>
+Defines the lowest legal and usable angle for the servomotor. The angle must be between 0 and 240.
 
-    max_angle: <degree>
-Defines the highest legal and usable angle for the servomotor
+    maximum_angle: <degree>
+Defines the highest legal and usable angle for the servomotor. The angle must be between 0 and 240.
 
 ## start servo control node
 

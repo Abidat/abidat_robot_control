@@ -1,16 +1,6 @@
-servos: [servo_a, servo_b]
-servo_port: "/dev/servo"            # used file descriptor for usb servo control device
-
-servo_a:
-  ID: 4                             # ID of the servomotor in use
-  publisher_topic: "servo_a/info"     # ros topic which the node should publish the servos status
-  subscriber_topic: "servo_a/degree"  # ros topic which the node should receive the new angles
-  min_angle: 0                      # lowest allowed angle
-  max_angle: 240                    # highest allowed angle
-
-servo_b:
-  ID: 5                             # ID of the servomotor in use
-  publisher_topic: "servo_b/info"     # ros topic which the node should publish the servos status
-  subscriber_topic: "servo_b/degree"  # ros topic which the node should receive the new angles
-  min_angle: 0                      # lowest allowed angle
-  max_angle: 240                    # highest allowed angle
+servo_id: 5                           # ID of the servomotor in use
+servo_port: "/dev/servo"              # port where the servomotor is going to be found.
+publisher_topic: "servo/info"       # ros topic which the node should publish the servos status
+subscriber_topic: "servo/degree"    # ros topic which the node should receive the new angles
+minimum_angle: 0                      # lowest allowed angle
+maximum_angle: 200                    # highest allowed angle

@@ -143,7 +143,7 @@ def initServo(sid: int):
     """Initialize servomotor
     Keyword arguments:
     sid -- id of chosen servomotor"""
-    rospy.loginfo("initializing servo" + str(sid))
+    rospy.loginfo("initializing servo " + str(sid))
     global servomotor
     servomotor = LX16A(sid)
     rospy.loginfo("initialization successful")
@@ -154,6 +154,7 @@ def configAngle(min_angle: int, max_angle: int):
     Keyword arguments:
     min_angle -- minimum angle received as a parameter
     max_angle -- maximum angle received as a parameter"""
+    rospy.loginfo("setting lowest angle to " + str(min_angle) + " and highest angle to " + str(max_angle))
     servomotor.angleLimitWrite(min_angle, max_angle)
 
 def initSubscriber(topic: str):

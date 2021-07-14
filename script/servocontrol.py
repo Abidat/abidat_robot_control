@@ -2,7 +2,7 @@
 # ROS dependencies
 import rospy
 from std_msgs.msg import Int64
-from officerobot.msg import ServoInfo
+from abidat_robot_control.msg import ServoInfo
 import time
 
 # servo lib dependency

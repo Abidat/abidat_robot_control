@@ -22,7 +22,7 @@ class ServoDynamicStatus:
     def __init__(self):
         self.input_voltage = 0.0
         self.offset_angle = 0.0
-        self.id = 0
+        self.id = 1
         self.temperature = 0.0
         self.physical_pos = 0
         self.virtual_pos = 0
@@ -34,10 +34,10 @@ class ServoDynamicStatus:
 class Parameters:
     """Read parameters from the parameter server"""
     def __init__(self):
-        self.servo_id = None
-        self.servo_port = None
-        self.pub_topic = None
-        self.sub_topic = None
+        self.servo_id = 1
+        self.servo_port = "/dev/servo"
+        self.pub_topic = "/servo/state"
+        self.sub_topic = "/servo/cmd"
     
 def readParam() -> Parameters:
     """Read parameters from the parameter server
@@ -45,10 +45,10 @@ def readParam() -> Parameters:
     Returns:
     param - read parameters from the parameterserver and save them in Parameters class"""
     param = Parameters()
-    param.servo_id = rospy.get_param('~servo_id')
-    param.servo_port = rospy.get_param('~servo_port')
-    param.pub_topic = rospy.get_param('~publisher_topic')
-    param.sub_topic = rospy.get_param('~subscriber_topic')
+#    param.servo_id = rospy.get_param('~servo_id')
+#    param.servo_port = rospy.get_param('~servo_port')
+#    param.pub_topic = rospy.get_param('~publisher_topic')
+#    param.sub_topic = rospy.get_param('~subscriber_topic')
 
     return param
 
@@ -111,13 +111,33 @@ def initNodeAndServo():
     """Mainfunction 
     
     Initializing ROS node and servomotors"""
-    rospy.init_node('servocontrol', anonymous=True)
+    rospy.loginfo("Start initializing node")
     param = readParam()
-    initServoBus(param.servo_port)
-    initServo(param.servo_id)
 
-    initPublisher(param.pub_topic)
-    initSubscriber(param.sub_topic)
+#    initServoBus(param.servo_port)
+    device = str("/dev/servo")
+    rospy.loginfo("initializing servo bus on " + str(device))
+    LX16A.initialize(device)
+    rospy.loginfo("initialization successful")
+
+#    initServo(param.servo_id)
+    rospy.loginfo("initializing servo" + str(param.servo_id))
+    global servomotor
+    servomotor = LX16A(param.servo_id)
+    rospy.loginfo("initialization successful")
+
+#    initPublisher(param.pub_topic)
+    rospy.loginfo("initializing status publisher")
+    global servo_pub
+    servo_pub = rospy.Publisher(param.pub_topic, ServoInfo, queue_size = 1)
+    rospy.loginfo("initialization successful")
+
+#    initSubscriber(param.sub_topic)
+    rospy.loginfo("initializing ROS subscriber to " + str(param.sub_topic))
+    rospy.Subscriber(param.sub_topic, Int64, moveServo)
+    rospy.loginfo("initialization successful")
+
+    rospy.init_node('servocontrol', anonymous=True)
 
     global servo_time
     servo_time = rospy.get_rostime()

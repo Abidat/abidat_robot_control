@@ -21,6 +21,7 @@ add_message_files(
   DeviceInfo.msg
   MotorState.msg
   MotorControl.msg
+  ServoInfo.msg
 )
 
 generate_messages(

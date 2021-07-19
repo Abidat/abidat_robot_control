@@ -41,14 +41,16 @@ double linearActivation(const double value)
  */ 
 double expoActivation(const double value)
 {
-  //Some functions that can be tested on the robot
-  //(x*x) / (2-x)
-  //(x*x) / (3-x)
-  //std::pow(value, 3);
-
-  return std::pow(value, 2) / (2-value);
+  assert(value >= -1.0 && value <= 1.0);
+  return value * value * (value < 0.0 ? -1.0 : 1.0);
 }
 
+
+double polyActivation(const double value)
+{
+  assert(value >= -1.0 && value <= 1.0);
+  return (value * value * value + value) / 2.0;
+}
 
 ActivationFunction createActivationFunction(const std::string& name)
 {
@@ -57,6 +59,9 @@ ActivationFunction createActivationFunction(const std::string& name)
   }
   else if (name == "exponential") {
     return expoActivation;
+  }
+  else if (name == "polynomial") {
+    return polyActivation;
   }
   else {
     ROS_ERROR("createActivationFunction(): the specified function does not exist.");

@@ -3,31 +3,23 @@
  *             It publishes to /officerobot/cmd_vel the joy messages computed based on the activation function (from the input mapper) and on the data received from the controller.
  *  
  * \author     Claudia Bina (c.bina@abidat.de)
+ * \author     Christian Wendt (c.wendt@abidat.de)
  * 
  * \file       teleoperation.h
  */
+#pragma once
 
+#include <geometry_msgs/msg/detail/twist__struct.hpp>
+#include <memory>
 
-#ifndef ___TELEOPERATION_H___
-#define ___TELEOPERATION_H___
+#include <geometry_msgs/msg/twist_stamped.hpp>
+#include <rclcpp/publisher.hpp>
+#include <rclcpp/subscription.hpp>
+#include <sensor_msgs/msg/detail/joy__struct.hpp>
+#include <sensor_msgs/msg/joy.hpp>
+#include <geometry_msgs/msg/twist.hpp>
 
-#include <ros/ros.h>
-#include <geometry_msgs/TwistStamped.h>
-#include <sensor_msgs/Joy.h>
-#include <geometry_msgs/Twist.h>
-
-#include <signal.h>
-#include <termios.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <cmath>
-
-#include <signal.h>
-#include <termios.h>
-#include <stdio.h>
-#include <math.h>
-
-#include "input_mapping.h"
+#include "library/input_mapping.h"
 #include "get_keyboard_input.h"
 
 namespace abidat {
@@ -45,22 +37,21 @@ public:
   {
     keyboard_input_.stop();
   }
-  void switchInput(const sensor_msgs::Joy::ConstPtr& joy);
+  void switchInput(std::shared_ptr<const sensor_msgs::msg::Joy> joy);
 
 private:
   /**
    * \brief Reads the parameters from the parameter server and maps them into the input mapper, It also sets the activation function.
    */
   bool readParameters();
-  void joyCallback(const sensor_msgs::Joy::ConstPtr& joy);
+  void joyCallback(std::shared_ptr<const sensor_msgs::msg::Joy> joy);
   void keyCallback(const int key);
 
   double currentReading;
   bool keyboard_enable_ = false;
 
-  ros::Subscriber sub_joy_;
-  ros::Publisher pub_twist_;
-  ros::NodeHandle nh;
+  rclcpp::Subscription<sensor_msgs::msg::Joy> sub_joy_;
+  rclcpp::Publisher<geometry_msgs::msg::Twist> pub_twist_;
 
   InputMapping input_mapper_;
   GetKeyboardInput keyboard_input_{std::bind(&TeleoperationNode::keyCallback, this, std::placeholders::_1)};
@@ -71,6 +62,3 @@ private:
 } //end namespace robot
 
 } //end namespace abidat
-
-#endif
-

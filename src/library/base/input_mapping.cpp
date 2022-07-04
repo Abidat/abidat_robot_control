@@ -3,12 +3,16 @@
  *   It also computes velocity based on axes values and activation function
  * 
  * \author      Claudia Bina  (c.bina@abidat.de)
+ * \author      Christian Wendt (c.wendt@abidat.de)
  * 
  * \copyright   Abidat GmbH
  */
 
 #include <optional>
-#include <ros/console.h>
+
+#include <geometry_msgs/msg/twist.hpp>
+#include <sstream>
+#include <stdexcept>
 
 #include "input_mapping.h"
 
@@ -66,7 +70,7 @@ bool InputMapping::isInitializedVelocities(const MaxVelocities& max) const
  * \param buttons the buttons vector of the received joy message
  *        
  */ 
-std::optional<geometry_msgs::Twist> InputMapping::computeVelocity(const std::vector<float>& axes,
+std::optional<geometry_msgs::msg::Twist> InputMapping::computeVelocity(const std::vector<float>& axes,
                                                                   const std::vector<std::int32_t>& buttons) const
 {
     //indices should be smaller than axes size
@@ -76,13 +80,14 @@ std::optional<geometry_msgs::Twist> InputMapping::computeVelocity(const std::vec
        ||
        input_indicies_.idx_velocity_angular >= axes.size())
     {
-        ROS_WARN ("InputMapping::computeVelocity(): indices out range");
-        ROS_WARN ("Indices should be < %lu and they are:", axes.size());
-        ROS_WARN ("idx_velocity_x = %d", input_indicies_.idx_velocity_x);
-        ROS_WARN ("idx_velocity_y = %d", input_indicies_.idx_velocity_y);
-        ROS_WARN ("idx_velocity_angular = %d", input_indicies_.idx_velocity_angular);
+        std::stringstream error_msg;
+        error_msg << "InputMapping::computeVelocity(): indices out range\n";
+        error_msg << "Indices should be < " << axes.size() << " and they are:" << '\n';
+        error_msg << "idx_velocity_x       = " << input_indicies_.idx_velocity_x << '\n';
+        error_msg << "idx_velocity_y       = " << input_indicies_.idx_velocity_y << '\n';
+        error_msg << "idx_velocity_angular = " << input_indicies_.idx_velocity_angular << '\n';
 
-        return std::nullopt;
+        throw std::runtime_error(error_msg.str());
     }
 
     //indices should have values greater than 0, so they need to be also set, not only initialized
@@ -90,11 +95,10 @@ std::optional<geometry_msgs::Twist> InputMapping::computeVelocity(const std::vec
         ||
         isInitializedVelocities(max_velocities_) )
     {
-        ROS_WARN ("InputMapping::computeVelocity(): input_indices or max_velocities not set");
-        return std::nullopt;
+        throw std::runtime_error("InputMapping::computeVelocity(): input_indices or max_velocities not set");
     };
 
-    geometry_msgs::Twist twistMsg;
+    geometry_msgs::msg::Twist twistMsg;
 
     // 1. get axes values from axes vector using indices
     float xVelocityValue;
@@ -118,9 +122,9 @@ std::optional<geometry_msgs::Twist> InputMapping::computeVelocity(const std::vec
     return twistMsg;
 }
 
-std::optional<geometry_msgs::Twist> InputMapping::computeVelocity(const int& key)
+std::optional<geometry_msgs::msg::Twist> InputMapping::computeVelocity(const int& key)
 {
-    geometry_msgs::Twist twistMsg;
+    geometry_msgs::msg::Twist twistMsg;
     
     switch (key)
     {
@@ -155,7 +159,7 @@ std::optional<geometry_msgs::Twist> InputMapping::computeVelocity(const int& key
             twistMsg.angular.z = -angular_keyboard_speed_;  
             break;
         default:
-            ROS_INFO("Illegal keyboard input");
+            throw std::runtime_error("Illegal keyboard input");
             break;
     }
 

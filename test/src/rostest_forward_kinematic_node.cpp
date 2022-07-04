@@ -3,9 +3,13 @@
  * \author     Egzone Ademi (e.ademi@abidat.de)
  */
 
+#include <cstddef>
 #include <gtest/gtest.h>
-#include <nodes/forward_kinematic_node.h>
-#include <ros/ros.h>
+
+#include <rclcpp/node.hpp>
+#include <rclcpp/rclcpp.hpp>
+
+#include "nodes/forward_kinematic_node.h"
 #include "forward_kinematic_calculation.h"
 
 namespace abidat {
@@ -18,14 +22,16 @@ namespace control {
 /**
  * \brief Class that contains all necessary attributes to publish and subscribe a twist message 
  */
-class TestForwardKinematic : public ::testing::Test
+class TestForwardKinematic : public ::testing::Test, public rclcpp::Node
 {
 public:
+  TestForwardKinematic() : rclcpp::Node("TestForwardKinematicNode") { }
+
   void SetUp() 
   { 
     // initialize publisher and subscriber
     for(std::size_t i = 0; i < forward_kinematics_.getNumMotors(); ++i)
-      pub_motor_control_[i] = nh_.advertise<abidat_robot_control::MotorControl>("/officerobot/motor_control_" + i, 1);
+      pub_motor_control_[i] = nh_.advertise<abidat_robot_control::msg::MotorControl>("/officerobot/motor_control_" + i, 1);
 
     pub_twist_msg_ = nh_.advertise<geometry_msgs::Twist>("/officerobot/cmd_vel", 1);
     velocity_subscriber_ = nh_.subscribe<geometry_msgs::Twist>("/officerobot/cmd_vel", 1, &TestForwardKinematic::callBackTwist, this);        
@@ -98,11 +104,11 @@ private:
   // create ForwardKinematics object with wheel distance and wheel diameter
   ForwardKinematics forward_kinematics_{0.2, 0.056};
   
-  ros::NodeHandle nh_;
-  std::array<ros::Publisher, 4> pub_motor_control_;
-  ros::Publisher pub_twist_;
-  ros::Publisher pub_twist_msg_;
-  ros::Subscriber velocity_subscriber_;
+  static constexpr std::size_t NUM_PUBLISHER = 4u;
+  std::array<rclcpp::Publisher<abidat_robot_control::msg::MotorControl>, 4> pub_motor_control_;
+  rclcpp::Publisher<geometry_msgs::msg::Twist> pub_twist_;
+  rclcpp::Publisher<geometry_msgs::msg::Twist> pub_twist_msg_;
+  rclcpp:: velocity_subscriber_;
 
   bool correct_twist_msg_received_ = false;
 };

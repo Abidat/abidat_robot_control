@@ -5,12 +5,10 @@
  * 
  * \copyright   Abidat GmbH
  */
-
-#include <ros/ros.h>
-
 #include <functional>
-#include <assert.h>
+#include <cassert>
 #include <cmath>
+#include <string>
 
 namespace abidat {
 
@@ -27,7 +25,7 @@ using ActivationFunction = std::function<double(const double)>;
  * 
  * \param value the input number of the function
  */ 
-double linearActivation(const double value)
+inline double linearActivation(const double value)
 {
   assert(value >= -1.0 && value <= 1.0);
   return value;
@@ -39,7 +37,7 @@ double linearActivation(const double value)
  * 
  * \param value the input number of the function
  */ 
-double expoActivation(const double value)
+inline double expoActivation(const double value)
 {
   //Some functions that can be tested on the robot
   //(x*x) / (2-x)
@@ -50,7 +48,7 @@ double expoActivation(const double value)
 }
 
 
-ActivationFunction createActivationFunction(const std::string& name)
+inline ActivationFunction createActivationFunction(const std::string& name)
 {
   if (name == "linear") {
     return linearActivation;
@@ -59,12 +57,8 @@ ActivationFunction createActivationFunction(const std::string& name)
     return expoActivation;
   }
   else {
-    ROS_ERROR("createActivationFunction(): the specified function does not exist.");
+    throw("createActivationFunction(): the specified function does not exist.");
   }
-
-  // return empty function
-  // @todo it is better to throw an exception here or return std::optional
-  return { };
 }
 
 } //end namespace control

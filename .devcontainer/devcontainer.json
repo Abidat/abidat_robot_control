@@ -1,5 +1,5 @@
 {
-    "name": "francor_ros2",
+    "name": "abidat ros2",
     // "image": "osrf/ros:humble-desktop",
     "build": { "dockerfile": "Dockerfile" },
     "runArgs": [

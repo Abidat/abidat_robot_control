@@ -12,6 +12,7 @@ find_package(builtin_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 # Generate custom messages
 rosidl_generate_interfaces(${PROJECT_NAME}
@@ -27,12 +28,20 @@ rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typ
 ## Build robot control C++ library
 add_library(abidat_robot_control_base SHARED               
   src/library/brick_pi/BrickPi3.cpp
-  src/library/input_mapping.cpp
-  src/library/get_keyboard_input.cpp
+  src/library/base/input_mapping.cpp
+  src/library/base/get_keyboard_input.cpp
 )
-
+target_include_directories(abidat_robot_control_base
+  PUBLIC  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+          $<INSTALL_INTERFACE:include>
+)        
 target_link_libraries(abidat_robot_control_base
-  PRIVATE ncurses # \Todo use "find package" instead
+  ncurses # \Todo use "find package" instead
+  "${cpp_typesupport_target}"
+)
+ament_target_dependencies(abidat_robot_control_base
+  geometry_msgs
+  sensor_msgs
 )
 
 ## Nodes
@@ -103,6 +112,9 @@ ament_add_gtest(rostest_teleop_node
   test/src/rostest_teleop_node.cpp 
 )
 if (TARGET rostest_teleop_node)
+  target_include_directories(rostest_teleop_node
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+  )
   target_link_libraries(rostest_teleop_node
     abidat_robot_control_base
   )
@@ -114,9 +126,16 @@ ament_add_gtest(rostest_forward_kinematic_node
   test/src/rostest_forward_kinematic_node.cpp
 )
 if (TARGET rostest_forward_kinematic_node)
-  target_link_libraries(rostest_teleop_node
+  message(STATUS "Pfad für dingens: ${CMAKE_CURRENT_SOURCE_DIR}/src")
+  target_include_directories(rostest_forward_kinematic_node
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+  )
+  target_link_libraries(rostest_forward_kinematic_node
     abidat_robot_control_base
   )
+  ament_target_dependencies(rostest_forward_kinematic_node
+    rclcpp
+  )  
 endif()
 
 

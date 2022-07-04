@@ -2,23 +2,18 @@
  * \brief      This class is used to calculate Forward Kinematics
  *  
  * \author     Egzone Ademi (e.ademi@abidat.de)
+ * \author     Christian Wendt (c.wendt@abidat.de)
  */
 #pragma once
 
 
 //Custom OfficeRobot State Messages
-#include <abidat_robot_control/MotorControl.h>
-
-//ROS
-#include <ros/ros.h>
+#include "abidat_robot_control/msg/motor_control.hpp"
 
 //ROS Messages
-#include <geometry_msgs/Twist.h>
+#include <geometry_msgs/msg/twist.hpp>
 
 //Thread and thread management
-#include <thread>
-#include <mutex>
-#include <atomic>
 #include <cmath> 
 #include <array>
 #include <vector>
@@ -38,7 +33,7 @@ namespace control {
   {
   public:
     virtual std::size_t getNumMotors() const = 0;
-    virtual std::vector<double> calculateForwardKinematics(const geometry_msgs::Twist& twist_msg) = 0;
+    virtual std::vector<double> calculateForwardKinematics(const geometry_msgs::msg::Twist& twist_msg) = 0;
   };
 
   /**
@@ -64,7 +59,7 @@ namespace control {
        * \param twist_msg the input messages for linear and angular velocity 
        * \return vector that includes the velocity 
        */
-      std::vector<double> calculateForwardKinematics(const geometry_msgs::Twist& twist_msg)
+      std::vector<double> calculateForwardKinematics(const geometry_msgs::msg::Twist& twist_msg)
       { 
         std::vector<double> velocity;
         // calculate linear component of movement

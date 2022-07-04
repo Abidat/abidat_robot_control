@@ -5,22 +5,23 @@
  * \maintainer Egzone Ademi (e.ademi@abidat.de)
  */
 #include "forward_kinematic_node.h"
-#include "forward_kinematic_calculation.h"
-#include "forward_kinematic.h"
+#include "abidat_robot_control/base/forward_kinematic_calculation.h"
+#include "abidat_robot_control/base/forward_kinematic.h"
 
-#include "abidat_robot_control/MotorControl.h" 
+#include "abidat_robot_control/msg/motor_control.hpp" 
 
 namespace abidat {
-
 namespace robot {
-
 namespace control {
 
-bool ForwardKinematicNode::initialize(ros::NodeHandle& private_nh, ros::NodeHandle& node)
+bool ForwardKinematicNode::initialize()
 {
-  ROS_INFO("Start setting the Robot parameters");
+  RCLCPP_INFO(get_logger(), "Start setting the Robot parameters");
 
   // Getting needed parameters
+  declare_parameter<double>("distance_wheels", 0.0);
+  declare_parameter<double>("wheel_diameter", 0.0);
+
   if(private_nh.hasParam("distance_wheels"))
   {
     private_nh.getParam("distance_wheels", this->distance_wheels_);
@@ -57,7 +58,7 @@ bool ForwardKinematicNode::initialize(ros::NodeHandle& private_nh, ros::NodeHand
   return true;
 }
 
-void ForwardKinematicNode::callback(const geometry_msgs::TwistConstPtr& twist_msg){
+void ForwardKinematicNode::callback(std::shared_ptr<geometry_msgs::msg::Twist> twist_msg){
   
   // get total movement from forward kinematics
   std::vector<double> velocity;

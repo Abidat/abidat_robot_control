@@ -3,18 +3,15 @@
  *   It also computes velocity based on axes values and activation function
  * 
  * \author      Claudia Bina  (c.bina@abidat.de)
+ * \author      Christian Wendt (c.wendt@abidat.de)
  * 
  * \copyright   Abidat GmbH
  */
 
-#include <geometry_msgs/Twist.h>
+#include <geometry_msgs/msg/twist.hpp>
 
-#include <signal.h>
-#include <termios.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <cmath>
-#include <math.h>
+#include <optional>
 
 #include "activation_function.h"
 #include "get_keyboard_input.h"
@@ -80,7 +77,7 @@ public:
  * \param buttons the buttons vector of the received joy message
  *        
  */ 
-  std::optional<geometry_msgs::Twist> computeVelocity(const std::vector<float>& axes, 
+  std::optional<geometry_msgs::msg::Twist> computeVelocity(const std::vector<float>& axes, 
                                                       const std::vector<std::int32_t>& buttons) const;
 
 /**
@@ -88,7 +85,7 @@ public:
  * 
  * \param key the integer value of the pressed key recieved by GetKeyboardInput::getKey.
  */ 
-  std::optional<geometry_msgs::Twist> computeVelocity(const int& key);
+  std::optional<geometry_msgs::msg::Twist> computeVelocity(const int& key);
 
 private:
 

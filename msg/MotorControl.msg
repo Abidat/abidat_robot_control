@@ -1,4 +1,4 @@
-Header header
+std_msgs/Header header
 
 uint8 ROTATION=0
 uint8 POSITION=1

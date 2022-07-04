@@ -1,0 +1,39 @@
+{
+    "name": "francor_ros2",
+    // "image": "osrf/ros:humble-desktop",
+    "build": { "dockerfile": "Dockerfile" },
+    "runArgs": [
+      "-it",
+      "--gpus",
+      "all",
+      "--net=host",
+      "--pid=host",
+      "--env=DISPLAY",
+      "--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw"
+    ],
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "containerEnv": {
+      "http_proxy": "${localEnv:http_proxy}",
+      "https_proxy": "${localEnv:http_proxy}"
+    },
+    "remoteUser": "developer",
+    "extensions": [
+		"ms-vscode.cpptools",
+		"ms-vscode.cpptools-linux",
+		"ms-vscode.cmake-tools",
+		"ms-python.python",
+		"ms-azuretools.vscode-docker",
+		"ms-vscode-remote.remote-containers",
+		"vscode-icons-team.vscode-icons",
+		"editorconfig.editorconfig",
+		"eamodio.gitlens",
+		"xaver.clang-format",
+		"streetsidesoftware.code-spell-checker",
+		"cschlosser.doxdocgen",
+		"yzhang.markdown-all-in-one",
+		"streetsidesoftware.code-spell-checker",
+		"llvm-vs-code-extensions.vscode-clangd"
+	]
+  }

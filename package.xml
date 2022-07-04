@@ -1,25 +1,24 @@
 <?xml version="1.0"?>
-<package format="2">
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>abidat_robot_control</name>
-  <version>0.3.0</version>
-  <maintainer email="c.merkl@abidat.de">Christian Merkl</maintainer>
+  <version>0.4.0</version>
+  <maintainer email="c.wendt@abidat.de">Christian Wendt</maintainer>
   <description>
     Abidat Office Robot
   </description>
-  <maintainer email="c.merkl@abidat.de">Christian Merkl</maintainer>
 
   <license>GPLv2</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <build_depend>rosidl_default_generators</build_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
 
-  <build_depend>message_generation</build_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
 
   <depend>geometry_msgs</depend>
   <depend>std_msgs</depend>
-  <depend>roscpp</depend>
-  <depend>rospy</depend>
+  <depend>rclcpp</depend>
   <depend>tf</depend>
-  <depend>message_runtime</depend>
-  <depend>ros_msgs</depend>
 
 </package>

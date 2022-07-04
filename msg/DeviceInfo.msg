@@ -1,4 +1,4 @@
-Header header
+std_msgs/Header header
 string manufacturer
 string board
 string serial_number

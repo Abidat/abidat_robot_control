@@ -6,17 +6,23 @@
 #pragma once
 
 //ROS
-#include <ros/ros.h>
+#include <rclcpp/node.hpp>
+#include <rclcpp/publisher.hpp>
+#include <rclcpp/rclcpp.hpp>
 
 //ROS Messages
-#include <geometry_msgs/Twist.h>
-#include <std_msgs/Header.h>
+#include <geometry_msgs/msg/twist.hpp>
+#include <rclcpp/subscription.hpp>
+#include <std_msgs/msg/header.hpp>
 
 //Custom OfficeRobot State Messages
 // \todo: actually it can be removed
-#include <abidat_robot_control/MotorState.h>
-#include <abidat_robot_control/DeviceInfo.h>
-#include <abidat_robot_control/MotorControl.h>
+#include "abidat_robot_control/msg/detail/device_info__struct.hpp"
+#include "abidat_robot_control/msg/detail/motor_control__struct.hpp"
+#include "abidat_robot_control/msg/detail/motor_state__struct.hpp"
+#include "abidat_robot_control/msg/motor_state.hpp"
+#include "abidat_robot_control/msg/device_info.hpp"
+#include "abidat_robot_control/msg/motor_control.hpp"
 
 //Thread and thread management
 #include <thread>
@@ -25,7 +31,7 @@
 #include <memory>
 
 //BrickPi
-#include "brick_pi/BrickPi3.h"
+#include "abidat_robot_control/brick_pi/BrickPi3.h"
 
 /**
  * @brief The namespace used for OfficeRobot
@@ -41,7 +47,7 @@ namespace control {
  * @brief This class handles a brick pie motor using the brick pie library. This class is a ROS node.
  * 
  */
-class MotorHandlerNode 
+class MotorHandlerNode : public rclcpp::Node
 {
   public:
   /**
@@ -133,22 +139,20 @@ class MotorHandlerNode
      * @brief Construct a new Office Robot Motor Driver object
      * 
      */
-    MotorHandlerNode(void);
+    MotorHandlerNode();
 
     /**
      * @brief Destroy the Office Robot Motor Driver object
      * 
      */
-    ~MotorHandlerNode(void);
+    ~MotorHandlerNode();
 
     /**
      * \brief Initialize this node using the given node handles.
      * 
-     * \param privNh necessary private node handle.
-     * \param nh necessary public node handle.
      * \return true if initialization was successful.
      */
-    bool initialize(ros::NodeHandle& privNh, ros::NodeHandle& nh);
+    bool initialize();
 
   private:
     /**
@@ -156,7 +160,7 @@ class MotorHandlerNode
      * 
      * @param motor_control Velocity that is published into the topic
      */
-    void MotorHandlerNodeCallback(const abidat_robot_control::MotorControlConstPtr& motor_control,size_t motorIdx);
+    void MotorHandlerNodeCallback(const std::shared_ptr<abidat_robot_control::msg::MotorControl>& motor_control, std::size_t motor_idx);
     
     /**
      * @brief This function instantiate the BrickPi and checks if the connection with the harware is succesfull or not.
@@ -164,7 +168,7 @@ class MotorHandlerNode
      * @return true If initialization is done without error
      * @return false If initialisation failes, this will cause the node stop
      */
-    bool initBrickPi(void);
+    bool initBrickPi();
 
     /**
      * @brief This function is called from the callback, it will get the speed (do a calculation if nessesary)
@@ -201,7 +205,7 @@ class MotorHandlerNode
      * @return true if the read is done succefully
      * @return false if the read has failed, this will also cause the stop of the node
      */
-    bool readMotorConfigurations(ros::NodeHandle& privNh);
+    bool readMotorConfigurations();
 
     /**
      * @brief Function to calibrate the turning of wheels, this function will reset the position to steering_mid_possition
@@ -227,11 +231,13 @@ class MotorHandlerNode
 
     // the size of the following arrays is alltime the maximum possible count, but can contain uninitialized (unused) motors.
     std::array<MotorConfiguration, static_cast<std::size_t>(MotorPort::COUNT)> motor_configurations_;
-    std::array<MotorState        , static_cast<std::size_t>(MotorPort::COUNT)> motor_states_;
-    std::array<ros::Subscriber   , static_cast<std::size_t>(MotorPort::COUNT)> sub_motor_controlls_;
-    std::array<ros::Publisher    , static_cast<std::size_t>(MotorPort::COUNT)> pub_motor_states_;
+    std::array<MotorState, static_cast<std::size_t>(MotorPort::COUNT)> motor_states_;
+    std::array<std::shared_ptr<rclcpp::Subscription<abidat_robot_control::msg::MotorControl>>,
+               static_cast<std::size_t>(MotorPort::COUNT)> sub_motor_controlls_;
+    std::array<std::shared_ptr<rclcpp::Publisher<abidat_robot_control::msg::MotorState>>,
+               static_cast<std::size_t>(MotorPort::COUNT)> pub_motor_states_;
 
-    ros::Publisher pub_device_info;   // Publisher for device info (was not sure where else I could write it )
+    std::shared_ptr<rclcpp::Publisher<abidat_robot_control::msg::DeviceInfo>> pub_device_info_; // Publisher for device info (was not sure where else I could write it )
 
     // get state from motors thread
     std::thread state_thread_;
@@ -246,7 +252,6 @@ class MotorHandlerNode
      * @param[motors_]   : Vector with enabled motors
      */
     std::unique_ptr<BrickPi3> brick_pi_;
-  
   };
 
 } //end namespace control

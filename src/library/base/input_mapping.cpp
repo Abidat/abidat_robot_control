@@ -14,7 +14,7 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "input_mapping.h"
+#include "abidat_robot_control/base/input_mapping.h"
 
 namespace abidat {
 

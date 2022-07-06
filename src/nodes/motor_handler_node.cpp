@@ -3,6 +3,8 @@
  *  
  */
 #include "motor_handler_node.h"
+#include <rclcpp/node.hpp>
+#include <rclcpp/qos.hpp>
 
 namespace abidat {
 
@@ -10,46 +12,47 @@ namespace robot {
 
 namespace control {
 
-MotorHandlerNode::MotorHandlerNode(void)
+MotorHandlerNode::MotorHandlerNode()
+  : rclcpp::Node("MotorHandlerNode")
+  , brick_pi_(std::make_unique<BrickPi3>())
 {
-  brick_pi_ = std::make_unique<BrickPi3>();
+
 }
 
-MotorHandlerNode::~MotorHandlerNode(void)
+MotorHandlerNode::~MotorHandlerNode()
 {
-  this->resetBrickPiValues();
-
+  resetBrickPiValues();
   is_running_ = false;
-  if(state_thread_.joinable())
-   {
-     state_thread_.join();
-   }
 
-    if(safety_thread_.joinable())
-   {
-     safety_thread_.join();
-   }
-
+  if(state_thread_.joinable()) {
+    state_thread_.join();
+  }
+  if(safety_thread_.joinable()) {
+    safety_thread_.join();
+  }
 }
 
-bool MotorHandlerNode::initialize(ros::NodeHandle& privNh, ros::NodeHandle& nh)
+bool MotorHandlerNode::initialize()
 {
   //Reading the parameters from launch filemotors_
-  if(!this->readMotorConfigurations(privNh))
-  {
-    ROS_ERROR("MotorHandlerNode: can't read motor configuration from ROS parameter server.");
+  if(!readMotorConfigurations()) {
+    RCLCPP_ERROR(get_logger(), "MotorHandlerNode: can't read motor configuration from ROS parameter server.");
     return false;
   }
-  else
-  {
-    for(std::size_t motorIdx = 0; motorIdx < static_cast<std::size_t>(MotorPort::COUNT); ++motorIdx)
-    {
-      if(motor_configurations_[motorIdx].is_enabled == true)
-      {
+  else {
+    for(std::size_t motorIdx = 0; motorIdx < static_cast<std::size_t>(MotorPort::COUNT); ++motorIdx) {
+      if(motor_configurations_[motorIdx].is_enabled == true) {
         //Initialize publisher motor_state and the subscriber motor_control for every enabled motor
-        pub_motor_states_[motorIdx]   = nh.advertise<abidat_robot_control::MotorState>("/officerobot/motor_state_" + std::to_string(motorIdx), 1);     
-        sub_motor_controlls_[motorIdx] = nh.subscribe<abidat_robot_control::MotorControl>("/officerobot/motor_control_" + std::to_string(motorIdx), 1, boost::bind(&MotorHandlerNode::MotorHandlerNodeCallback, this, _1, motorIdx));
-        ROS_INFO("The Publisher and the Subscriber for motor %i were started successfully", motorIdx);
+        pub_motor_states_[motorIdx] = create_publisher<abidat_robot_control::msg::MotorState>(
+          "/officerobot/motor_state_" + std::to_string(motorIdx),
+          rclcpp::QoS(1).best_effort()
+        );     
+        sub_motor_controlls_[motorIdx] = create_subscription<abidat_robot_control::msg::MotorControl>(
+          "/officerobot/motor_control_" + std::to_string(motorIdx),
+          rclcpp::QoS(1).best_effort(),
+          std::bind(&MotorHandlerNode::MotorHandlerNodeCallback, this, std::placeholders::_1, motorIdx)
+        );
+        RCLCPP_INFO(get_logger(), "The Publisher and the Subscriber for motor %i were started successfully", static_cast<int>(motorIdx));
       }
     }
     //Initialize Publisher Device_Info 

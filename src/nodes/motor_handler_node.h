@@ -13,6 +13,7 @@
 //ROS Messages
 #include <geometry_msgs/msg/twist.hpp>
 #include <rclcpp/subscription.hpp>
+#include <rclcpp/time.hpp>
 #include <std_msgs/msg/header.hpp>
 
 //Custom OfficeRobot State Messages
@@ -38,9 +39,7 @@
  * 
  */
 namespace abidat {
-
 namespace robot {
-
 namespace control {
 
 /**
@@ -160,7 +159,7 @@ class MotorHandlerNode : public rclcpp::Node
      * 
      * @param motor_control Velocity that is published into the topic
      */
-    void MotorHandlerNodeCallback(const std::shared_ptr<abidat_robot_control::msg::MotorControl>& motor_control, std::size_t motor_idx);
+    void MotorHandlerNodeCallback(const std::shared_ptr<abidat_robot_control::msg::MotorControl>& motor_control, const std::size_t motor_idx);
     
     /**
      * @brief This function instantiate the BrickPi and checks if the connection with the harware is succesfull or not.
@@ -191,7 +190,7 @@ class MotorHandlerNode : public rclcpp::Node
      * 
      * @param motor_ Object refference that stores all the states, including the name and port
      */
-    void readBrickPiValues(void);
+    void readBrickPiValues();
 
     /**
      * @brief Function that resets all the values, and makes sure that the motors have no power and encoders state is set to 0
@@ -216,7 +215,7 @@ class MotorHandlerNode : public rclcpp::Node
 
 
 
-    void TimeOutSafety(void);
+    void TimeOutSafety();
     /**
      * @brief Function check if the Subscriber is receiving massages for the MotorControll, 
      * if the officebot_motor_handler doesn't receive a massage(for example in case of network problems) for a period time the Robot stops 
@@ -226,7 +225,7 @@ class MotorHandlerNode : public rclcpp::Node
 
     // members
     bool is_initialized_ = false;
-    double last_MotorControll_msg_received = 0;
+    rclcpp::Time stamp_last_motor_control_msg{0, 0};
     double watchdog_timeout = 0.3; // todo: set this Patameter over launch file. 
 
     // the size of the following arrays is alltime the maximum possible count, but can contain uninitialized (unused) motors.
@@ -255,7 +254,5 @@ class MotorHandlerNode : public rclcpp::Node
   };
 
 } //end namespace control
-
 } //end namespace robot
-
 } //end namespace abidat
